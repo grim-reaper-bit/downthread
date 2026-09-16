@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — Downthread</title>
+<meta name="description" content="Privacy policy for the Downthread Chrome extension: what it reads, what it stores, what it never does, and why it asks for each permission.">
+<meta name="theme-color" content="#050507">
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="mesh" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="nav">
+  <div class="nav-pill">
+    <a class="brand" href="index.html"><img src="icon.png" alt=""> Downthread</a>
+    <nav class="nav-links">
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#data">What you get</a>
+      <a href="index.html#limits">Limits</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-primary" href="index.html#get">Install
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v9m0 0 3.4-3.4M8 11 4.6 7.6M2.5 13.5h11"/></svg></span>
+    </a>
+    <button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i></button>
+  </div>
+</div>
+
+<div class="sheet">
+  <a href="index.html#how">How it works</a>
+  <a href="index.html#data">What you get</a>
+  <a href="index.html#limits">Limits</a>
+  <a href="index.html#faq">FAQ</a>
+  <a href="index.html#get">Install</a>
+</div>
+
+<main class="wrap doc">
+  <div class="rv">
+    <span class="eyebrow"><span class="dot"></span> Privacy policy · 15 September 2026</span>
+    <h1 class="h-lead" style="margin:26px 0 24px">Your exports never leave your browser.</h1>
+    <p class="lede">The comments you export are read in the tab you already have open and written
+      straight to your Downloads folder. They are never uploaded, never sent to us, and never seen
+      by anyone but you.</p>
+    <p class="lede" style="margin-top:18px">Two things do leave your browser, and this page is
+      precise about both: the requests the extension makes to the platform you are exporting from,
+      and — only if you create an account — your email address and subscription status.</p>
+  </div>
+
+  <section style="padding-block:0" class="rv">
+    <h2>What it reads</h2>
+    <p>When you export a post, the extension reads the comment data that page is already receiving
+      from its own site — the same responses your browser loads as you scroll. It works only inside
+      your own signed-in session, on the tab you are looking at, and only on the sites listed in its
+      permissions. It cannot see anything you could not open yourself.</p>
+    <p>The comments it reads contain other people's names, profile links and words. That information
+      is assembled in the tab, written to the file you asked for, and discarded when the tab closes.</p>
+
+    <h2>What it stores, and where</h2>
+    <table class="tbl">
+      <thead><tr><th>What</th><th>Where</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Your panel settings — format, replies on or off, speed</td>
+          <td data-label="Where">Your browser's extension storage</td>
+          <td data-label="Why">So the panel opens the way you left it.</td>
+        </tr>
+        <tr>
+          <td>Your YouTube Data API key, if you use YouTube</td>
+          <td data-label="Where">Your browser's extension storage</td>
+          <td data-label="Why">It is your key, used to call YouTube directly. It is never sent
+            anywhere but to YouTube's own API.</td>
+        </tr>
+        <tr>
+          <td>A resume checkpoint for a long Facebook export</td>
+          <td data-label="Where">Your browser's extension storage</td>
+          <td data-label="Why">So a run interrupted after twenty minutes can continue instead of
+            starting over.</td>
+        </tr>
+        <tr>
+          <td>A short local history of your own runs</td>
+          <td data-label="Where">Your browser's extension storage</td>
+          <td data-label="Why">So you can see what you exported and when. It stays on this machine.</td>
+        </tr>
+        <tr>
+          <td>Your account: email address and a user id</td>
+          <td data-label="Where">Our database (Supabase), and your browser</td>
+          <td data-label="Why">Only if you sign in. It is how a subscription is attached to a
+            person. Without an account nothing of yours is stored anywhere but your own machine.</td>
+        </tr>
+        <tr>
+          <td>Your subscription status and renewal date</td>
+          <td data-label="Where">Our database (Supabase)</td>
+          <td data-label="Why">To answer one question the extension asks a few times a day: is
+            this person paid up, and if not, what is their export limit.</td>
+        </tr>
+        <tr>
+          <td>A sign-in token, and the last answer about your subscription</td>
+          <td data-label="Where">Your browser's extension storage</td>
+          <td data-label="Why">So you are not asked to sign in repeatedly, and so an export still
+            works when the network does not. Signing out deletes both.</td>
+        </tr>
+        <tr>
+          <td>The exported CSV or JSON file</td>
+          <td data-label="Where">Your Downloads folder</td>
+          <td data-label="Why">It is the thing you asked for. Nothing sends a copy anywhere.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Extension storage is private to the extension.</strong> The web pages
+      you visit cannot read it. Removing the extension removes all of it, and you can clear the run
+      history from the panel at any time.</div>
+
+    <h2>What it does not do</h2>
+    <ul class="bul">
+      <li><strong>No comment ever leaves your machine.</strong> Not one line of exported text, not an
+        author name, not a profile link, not a count. The account system carries your email and
+        whether you have paid — it has no idea which posts you export, or that you exported
+        anything at all.</li>
+      <li><strong>No tracking.</strong> No analytics, telemetry, crash reporting, cookies of its own,
+        advertising or advertising identifiers. Nothing records which pages you visit.</li>
+      <li><strong>No account required to use it.</strong> Signed out, the extension exports up to
+        200 comments per post and stores nothing off your machine. An account exists to lift that
+        limit, and for nothing else.</li>
+      <li><strong>No credentials.</strong> It never asks for, reads or stores your password, session
+        cookie or login token for any platform.</li>
+      <li><strong>No selling or sharing.</strong> Your email is used to identify your subscription
+        and for nothing else. It is not sold, not shared, not mailed to, and not used for any
+        purpose unrelated to running your account.</li>
+      <li><strong>No remote code.</strong> Everything it runs ships inside the extension package and
+        is reviewable in the source repository. Nothing is fetched and executed at runtime.</li>
+      <li><strong>No background activity.</strong> It does nothing until you press export, and stops
+        when the run ends or you press Stop.</li>
+    </ul>
+
+    <h2>Network requests it makes</h2>
+    <p>Three kinds, and no others. All of them come from your own browser.</p>
+    <ul class="bul">
+      <li>Requests to the platform you are exporting from — Facebook, TikTok, Instagram or X — of the
+        same kind the page makes for itself when you scroll its comments.</li>
+      <li>On YouTube, requests to <code>www.googleapis.com</code>, the official YouTube Data API,
+        authorised by the API key you supplied. Google's own privacy policy governs that call.</li>
+      <li><strong>If you have an account:</strong> requests to <code>supabase.co</code>, our
+        database, to sign you in and to ask whether your subscription is current. These carry your
+        sign-in token and nothing else — no comment text, no post address, no page you visited.
+        When you look at the price or press Subscribe, the request also carries your browser's time
+        zone setting (for example <code>Asia/Manila</code>), used only to decide whether a regional
+        rate applies. It is not stored.</li>
+    </ul>
+    <div class="callout"><strong>Who else is involved.</strong> Signing in uses Google, so Google
+      knows you signed in to this extension — it is told nothing about what you export. Accounts and
+      subscription records are held by <a href="https://supabase.com/privacy">Supabase</a> on our
+      behalf. Payment is handled by <a href="https://stripe.com/privacy">Stripe</a>, who takes your card
+      details directly on their own checkout page; we never see them.</div>
+
+    <h2>Why each permission is asked for</h2>
+    <table class="tbl">
+      <thead><tr><th>Permission</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td><code>activeTab</code></td>
+          <td data-label="Reason">To act on the tab you pressed the toolbar button from, and no other.</td></tr>
+        <tr><td><code>scripting</code></td>
+          <td data-label="Reason">To place the export panel and reader into that tab when you launch it.</td></tr>
+        <tr><td><code>storage</code></td>
+          <td data-label="Reason">To keep the settings, the YouTube key, the resume checkpoint and the
+            run history described above, all locally.</td></tr>
+        <tr><td><code>unlimitedStorage</code></td>
+          <td data-label="Reason">A post with tens of thousands of comments produces a resume
+            checkpoint larger than the default quota; without this the run would fail partway.</td></tr>
+        <tr><td>Site access to facebook.com, youtube.com, tiktok.com, instagram.com, x.com and
+            twitter.com</td>
+          <td data-label="Reason">These are the sites it exports from. It reads the comment responses
+            those pages already receive. It has no access to any other site.</td></tr>
+        <tr><td><code>identity</code></td>
+          <td data-label="Reason">To open the Google sign-in window when you choose to create an
+            account. Unused until you press sign in.</td></tr>
+        <tr><td>Site access to <code>supabase.co</code></td>
+          <td data-label="Reason">Our database: where an account is created and where the extension
+            asks whether your subscription is current.</td></tr>
+        <tr><td>Site access to <code>googleapis.com</code></td>
+          <td data-label="Reason">To call the official YouTube Data API with your key.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Handling what you export</h2>
+    <p>An export is other people's writing. Each platform's terms govern what you may collect and how
+      you may use it, and this tool does not change them. If you are using the exports for research,
+      the usual obligations apply — consent where required, care with identifying details, and storage
+      appropriate to the sensitivity of what you collected.</p>
+
+    <h2>Deleting your account</h2>
+    <p>Signing out removes the token and the cached answer from your browser immediately. To have
+      the account itself deleted — your email address and subscription record — write to the address
+      below and it will be removed, along with anything attached to it. Exports you have already
+      saved are yours and were never ours to delete.</p>
+
+    <h2 id="contact">Changes and contact</h2>
+    <p>If this policy changes, the updated version appears on this page and the date changes with it.</p>
+    <p><strong>Contact:</strong> <a href="mailto:downthread.support@gmail.com">downthread.support@gmail.com</a>
+      for support, questions about this policy, or to have your account deleted.</p>
+    <p class="dim" style="font-size:14.5px">Last updated 16 September 2026. Extension version 3.49.0.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>Downthread — built for research teams working with public comment data.</div>
+    <nav>
+      <a href="index.html">How it works</a>
+      <a href="privacy.html#contact">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

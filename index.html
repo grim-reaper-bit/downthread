@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Downthread — a post's comment section, in one file</title>
+<meta name="description" content="A Chrome extension for research teams. Export every comment and reply from a Facebook, YouTube, TikTok, Instagram or X post to CSV or JSON — with authors, timestamps, likes and thread structure — entirely inside your own browser.">
+<meta name="theme-color" content="#050507">
+<link rel="icon" href="icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Downthread — a post's comment section, in one file">
+<meta property="og:description" content="Export a whole comment section to CSV or JSON, in your own browser. Facebook, YouTube, TikTok, Instagram and X. No server, no account, and a run report that says what it missed.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="mesh" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="nav">
+  <div class="nav-pill">
+    <a class="brand" href="#top"><img src="icon.png" alt=""> Downthread</a>
+    <nav class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#data">What you get</a>
+      <a href="#platforms">Platforms</a>
+      <a href="#limits">Limits</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-primary" href="#get">Install
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v9m0 0 3.4-3.4M8 11 4.6 7.6M2.5 13.5h11"/></svg></span>
+    </a>
+    <button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i></button>
+  </div>
+</div>
+
+<div class="sheet">
+  <a href="#how">How it works</a>
+  <a href="#data">What you get</a>
+  <a href="#platforms">Platforms</a>
+  <a href="#limits">Limits</a>
+  <a href="#get">Install</a>
+</div>
+
+<header class="hero wrap" id="top">
+  <div class="hero-grid">
+    <div class="rv">
+      <span class="eyebrow"><span class="dot"></span> v3.45 · five platforms · runs locally</span>
+      <h1 class="h-lead">A whole comment section. <em>In one file.</em></h1>
+      <p class="lede">Export the whole comment section — replies, authors, timestamps, likes, thread
+        structure — from Facebook, YouTube, TikTok, Instagram or X. It runs inside the tab you already
+        have open, under your own session. No server, no account, nothing uploaded.</p>
+      <div class="btns">
+        <a class="btn btn-primary" href="#get">Get the extension
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v9m0 0 3.4-3.4M8 11 4.6 7.6M2.5 13.5h11"/></svg></span>
+        </a>
+        <a class="btn" href="#how">See how it works
+          <span class="ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h9m0 0L8.6 4.6M12 8l-3.4 3.4"/></svg></span>
+        </a>
+      </div>
+      <div class="hero-foot">
+        <div><b>5</b> platforms</div>
+        <div><b>CSV / JSON</b> same columns</div>
+        <div><b>0</b> servers involved</div>
+        <div><b>15</b> columns per row</div>
+      </div>
+    </div>
+
+    <div class="mock shell rv" data-run>
+      <div class="core">
+        <div class="mock-bar">
+          <span></span><span></span><span></span>
+          <b>downthread</b>
+          <div class="live"><i></i> running</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-stat"><b data-to="928">0</b><span>comments exported</span></div>
+          <div class="bar" style="--p:.851"><i></i></div>
+          <div class="mock-meta"><span>1,091 claimed by the page</span><span>85%</span></div>
+          <ul class="mock-log">
+            <li><s>&#10003;</s> reply phase 1.2s — 214 threads by token</li>
+            <li><s>&#10003;</s> comment rail never needed</li>
+            <li class="warn"><s>!</s> 163 not served — hidden, spam-collapsed or removed</li>
+            <li><s>&#10003;</s> wrote downthread-facebook-928.csv</li>
+          </ul>
+          <div class="mock-tags"><b>partial</b><b>facebook.com</b><b>csv</b><b>replies on</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="rail wrap">
+  <div class="rail-in rv">
+    <p>Works on</p>
+    <ul>
+      <li style="--c:var(--fb)"><i></i> Facebook</li>
+      <li style="--c:var(--yt)"><i></i> YouTube</li>
+      <li style="--c:var(--tt)"><i></i> TikTok</li>
+      <li style="--c:var(--ig)"><i></i> Instagram</li>
+      <li style="--c:var(--x)"><i></i> X</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================ how it works ============================ -->
+<section class="wrap" id="how">
+  <div class="sect-head rv">
+    <span class="eyebrow">How it works</span>
+    <h2>Three presses, and the page does the rest.</h2>
+    <p class="lede">There is no URL to paste, no scraper to configure and no credentials to hand over.
+      The exporter reads the comment data the page is already receiving, in the tab you are already
+      looking at.</p>
+  </div>
+
+  <div class="steps">
+    <div class="shell rv"><div class="core step">
+      <span class="n">01</span>
+      <h3>Open the post</h3>
+      <p>Signed in as you normally are. The panel appears by itself, minimized, in that platform's
+        own colours, as soon as comments load.</p>
+    </div></div>
+    <div class="shell rv"><div class="core step">
+      <span class="n">02</span>
+      <h3>Press Load all &amp; export</h3>
+      <p>Pick CSV or JSON and whether to include replies. Progress, current action and a Stop button
+        stay on screen the whole way. Stopping still saves what was gathered.</p>
+    </div></div>
+    <div class="shell rv"><div class="core step">
+      <span class="n">03</span>
+      <h3>Read the run report</h3>
+      <p>A plain-text account of what happened: what the platform claims, what was exported, and
+        every shortfall named. Paste it beside the file as your evidence.</p>
+    </div></div>
+  </div>
+
+  <p class="step-note rv">The one technical thing worth knowing: it does not simulate a human
+    scrolling forever. It reads each platform's own comment requests and replays them by template,
+    so tokens and credentials never leave the page. On one live run that turned a reply phase of
+    roughly half an hour into about a second. How long any particular post takes depends on the
+    platform, its pacing and how much it will serve.</p>
+</section>
+
+<!-- ============================ what you get ============================ -->
+<section class="wrap" id="data">
+  <div class="sect-head rv">
+    <span class="eyebrow">What you get</span>
+    <h2>A file you can hand to a statistician.</h2>
+    <p class="lede">One schema across all five platforms, so a Facebook export and an X export stack
+      in the same dataframe without a mapping step.</p>
+  </div>
+
+  <div class="bento">
+    <div class="shell rv w7"><div class="core pad card">
+      <div class="card-h"><span class="k">The columns</span></div>
+      <h3>Identical on every platform</h3>
+      <p>Thread structure survives the export: <code class="mono">parent_comment_id</code> points at
+        the comment being answered, so any thread rebuilds exactly.</p>
+
+      <div class="tabrow">
+        <div class="tabs" data-tabs role="tablist">
+          <button role="tab" aria-selected="true">CSV</button>
+          <button role="tab" aria-selected="false">JSON</button>
+        </div>
+        <button class="copy" data-copy="cols">Copy columns</button>
+      </div>
+
+      <div class="pane on">
+        <div class="scrollx">
+          <table class="grid-tbl">
+            <thead><tr><th>author</th><th>text</th><th>depth</th><th>parent_comment_id</th><th>likes</th><th>createdTime</th></tr></thead>
+            <tbody>
+              <tr><td>Amina R.</td><td>Where are the results for Basilan?</td><td>0</td><td>—</td><td>34</td><td>2026-09-14T02:11:07Z</td></tr>
+              <tr><td>Datu K.</td><td>Still partial, 61% of ERs in</td><td>1</td><td>Y29tbWVudDo3…MjE</td><td>12</td><td>2026-09-14T02:14:52Z</td></tr>
+              <tr><td>J. Mendoza</td><td>Source? COMELEC page says otherwise</td><td>1</td><td>Y29tbWVudDo3…MjE</td><td>3</td><td>2026-09-14T02:19:31Z</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="dim" id="cols" style="margin:16px 0 0;font:400 12.6px/1.8 var(--mono)">post_url, post_id, post_author, exported_at, account_id, comment_id, parent_comment_id, depth, isReply, author, profileUrl, text, createdTime, likes, replyCount</p>
+      </div>
+
+      <div class="pane">
+        <div class="term" style="margin-top:16px">{<br>
+          &nbsp;&nbsp;<i>"post_id"</i>: <s>"1091883…"</s>,<br>
+          &nbsp;&nbsp;<i>"exported_at"</i>: <s>"2026-09-14T02:31:08Z"</s>,<br>
+          &nbsp;&nbsp;<i>"comments"</i>: [<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;{ <i>"comment_id"</i>: <s>"Y29tbWVudDo3…MjE"</s>, <i>"depth"</i>: <b>0</b>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>"author"</i>: <s>"Amina R."</s>, <i>"likes"</i>: <b>34</b>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>"replyCount"</i>: <b>9</b>, <i>"isReply"</i>: <b>false</b> }<br>
+          &nbsp;&nbsp;]<br>
+        }</div>
+      </div>
+    </div></div>
+
+    <div class="shell rv w5"><div class="core pad card">
+      <div class="card-h"><span class="k">The run report</span></div>
+      <h3>Numbers you can cite</h3>
+      <p>Copied to your clipboard in one press, in plain words. This is the part most exporters
+        do not give you.</p>
+      <div class="term">
+        <b>Downthread — Facebook run report</b><br>
+        post &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facebook.com/…/posts/1091883<br>
+        claimed &nbsp;&nbsp;1,091 · <b>exported 928</b><br>
+        replies &nbsp;&nbsp;214 threads, <s>all read to the end</s><br>
+        status &nbsp;&nbsp;&nbsp;<u>PARTIAL</u><br>
+        <br>
+        <i>Where the rest went</i><br>
+        163 &nbsp;never served by Facebook<br>
+        0 &nbsp;&nbsp;&nbsp;threads left open<br>
+        0 &nbsp;&nbsp;&nbsp;duplicates skipped
+      </div>
+    </div></div>
+
+    <div class="shell rv"><div class="core pad card">
+      <div class="card-h"><span class="k">Long runs</span></div>
+      <h3>Resume, not restart</h3>
+      <p>A run interrupted twenty minutes in picks up from its checkpoint instead of starting the
+        whole post again.</p>
+    </div></div>
+
+    <div class="shell rv"><div class="core pad card">
+      <div class="card-h"><span class="k">Stop</span></div>
+      <h3>Always safe to press</h3>
+      <p>Stopping writes the file with everything gathered so far, and marks it PARTIAL so nobody
+        mistakes it for the whole set.</p>
+    </div></div>
+
+    <div class="shell rv"><div class="core pad card">
+      <div class="card-h"><span class="k">Spreadsheets</span></div>
+      <h3>No formula injection</h3>
+      <p>Cells beginning <code class="mono">=</code> <code class="mono">+</code>
+        <code class="mono">-</code> <code class="mono">@</code> are neutralised, so a comment cannot
+        execute when the file opens.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================ platforms =============================== -->
+<section class="wrap" id="platforms">
+  <div class="sect-head rv">
+    <span class="eyebrow">Platforms</span>
+    <h2>Five sites, five different sets of rules.</h2>
+    <p class="lede">Each one gives up its comments differently, and each one holds something back.
+      Here is exactly what to expect before you plan a collection round.</p>
+  </div>
+
+  <div class="plats">
+    <div class="shell rv" style="--c:var(--fb)"><div class="core plat">
+      <div class="plat-h"><i></i><h3>Facebook</h3></div>
+      <dl>
+        <div class="yes"><dt>You get</dt><dd>Posts, Reels, photos, videos and live replays. Comments and
+          replies with their full thread structure — reply threads fetched by their own token
+          rather than by clicking through the rail.</dd></div>
+        <div><dt>Held back</dt><dd>Facebook's own count includes hidden, spam-collapsed and
+          blocked-account comments it will not serve. The count and the list disagree on most large
+          posts; the report explains the gap instead of hiding it.</dd></div>
+      </dl>
+    </div></div>
+
+    <div class="shell rv" style="--c:var(--yt)"><div class="core plat">
+      <div class="plat-h"><i></i><h3>YouTube</h3></div>
+      <dl>
+        <div class="yes"><dt>You get</dt><dd>Videos and Shorts, comments and complete reply threads,
+          through the official YouTube Data API with your own key. The cleanest data of the five.</dd></div>
+        <div><dt>Held back</dt><dd>Your daily API quota is the ceiling. Livestreams have no comments
+          at all — only live chat, which is not part of an export.</dd></div>
+      </dl>
+    </div></div>
+
+    <div class="shell rv" style="--c:var(--tt)"><div class="core plat">
+      <div class="plat-h"><i></i><h3>TikTok</h3></div>
+      <dl>
+        <div class="yes"><dt>You get</dt><dd>Comments and replies on a video or photo post, with
+          reply threads opened and read to their end.</dd></div>
+        <div><dt>Held back</dt><dd>TikTok signs its requests, so the exporter often has to open
+          threads on the page instead of replaying a request. Deleted and hidden replies are never
+          served to anyone.</dd></div>
+      </dl>
+    </div></div>
+
+    <div class="shell rv" style="--c:var(--ig)"><div class="core plat">
+      <div class="plat-h"><i></i><h3>Instagram</h3></div>
+      <dl>
+        <div class="yes"><dt>You get</dt><dd>Posts and reels, comments with their replies attached to
+          the parent, and the caption's owner resolved properly.</dd></div>
+        <div><dt>Held back</dt><dd>Instagram rate-limits quickly and asks you to wait a few minutes.
+          A reel cross-posted from Facebook keeps its comments on Facebook — the panel says so rather
+          than reporting zero.</dd></div>
+      </dl>
+    </div></div>
+
+    <div class="shell rv wide" style="--c:var(--x)"><div class="core plat">
+      <div class="plat-h"><i></i><h3>X</h3></div>
+      <dl>
+        <div class="yes"><dt>You get</dt><dd>Replies to a post and the replies beneath those, nested
+          to whatever depth the conversation reaches, plus — if you ask for them — the replies X
+          hides as low quality.</dd></div>
+        <div><dt>Held back</dt><dd>A rate limit that resets every fifteen minutes. The run stops when
+          it hits one and says so; export again afterwards and it carries on from where it left
+          off rather than re-reading what it already has.</dd></div>
+      </dl>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================ limits ================================== -->
+<section class="wrap" id="limits">
+  <div class="honesty">
+    <div class="rv">
+      <span class="eyebrow">The honest part</span>
+      <h2 style="margin:20px 0 20px">A partial export is never dressed up as a complete one.</h2>
+      <p class="lede">Every exporter hits walls. The difference is whether it tells you. This one
+        marks the run PARTIAL, names the reason in the report, and puts the shortfall in front of
+        you before you build an argument on top of it.</p>
+      <p class="dim" style="margin-top:22px;font-size:15.5px">A thread that was opened but not read
+        to its end counts as incomplete. So does a refused request, a rate limit, and pressing Stop.
+        The rule holds identically on all five platforms.</p>
+    </div>
+
+    <div class="rv">
+      <div class="flags">
+        <div class="flag"><b>Partial</b><p>A thread was opened but its last page never arrived.</p></div>
+        <div class="flag"><b>Refused</b><p>The platform answered the request with an error or an empty page.</p></div>
+        <div class="flag"><b>Rate limit</b><p>The platform asked for a pause. The run stops rather than hammering it.</p></div>
+        <div class="flag"><b>Stopped</b><p>You pressed Stop. Everything gathered is still written out.</p></div>
+        <div class="flag"><b>Not served</b><p>Hidden, spam-collapsed, blocked or deleted — counted by the platform, never sent.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nots">
+    <div class="shell rv"><div class="core pad card">
+      <h3>It cannot see private content</h3>
+      <p>Only what your own signed-in session can already open. There is no privileged access, and
+        no way to reach a post you could not view yourself in that tab.</p>
+    </div></div>
+    <div class="shell rv"><div class="core pad card">
+      <h3>It never writes</h3>
+      <p>No posting, liking, following or messaging. It clicks only the controls that expand
+        comments, and never anything sitting inside a link.</p>
+    </div></div>
+    <div class="shell rv"><div class="core pad card">
+      <h3>It sends nothing anywhere</h3>
+      <p>No uploads, no analytics, no third-party services, no credentials collected. Your YouTube
+        API key stays in your own browser storage.</p>
+    </div></div>
+    <div class="shell rv"><div class="core pad card">
+      <h3>It does not beat a rate limit</h3>
+      <p>When a platform slows you down or refuses, the run ends and says why. Waiting is the only
+        remedy it offers, because it is the only honest one.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================ faq ===================================== -->
+<section class="wrap" id="faq">
+  <div class="sect-head rv">
+    <span class="eyebrow">Questions</span>
+    <h2>Before you install it.</h2>
+  </div>
+
+  <div class="faq">
+    <details class="rv"><summary>Does it need my password or a login token?<span class="pm"></span></summary>
+      <div class="ans"><p>No. It never asks for, reads or stores a password, session cookie or login
+        token for any platform. It works inside the session your browser already has, the same way
+        the page itself does.</p></div></details>
+
+    <details class="rv"><summary>Can using it get my account restricted?<span class="pm"></span></summary>
+      <div class="ans"><p>It is possible, and worth saying plainly. Reading a platform's own requests
+        at speed can breach that platform's terms even when the comments are public, and every
+        platform is free to act on that. The exporter paces itself, stops the moment it is rate
+        limited and never retries aggressively — but the judgement about whether to run it, and on
+        whose account, is yours.</p></div></details>
+
+    <details class="rv"><summary>Do I need a YouTube API key?<span class="pm"></span></summary>
+      <div class="ans"><p>For YouTube, yes. Create a project in the Google Cloud console, enable the
+        <strong>YouTube Data API v3</strong>, generate an API key and paste it into the panel once.
+        It is stored in your own browser and used only to call YouTube. The other four platforms need
+        no key at all.</p></div></details>
+
+    <details class="rv"><summary>Why does Facebook's comment count never match the export?<span class="pm"></span></summary>
+      <div class="ans"><p>Because the number under the post is not a count of comments you can read.
+        It includes comments hidden by the page, ones collapsed as spam, ones from accounts that have
+        blocked you, and ones since deleted. Facebook counts them and then declines to send them. The
+        report gives you both numbers and the gap between them, which is the honest thing to publish
+        beside a dataset.</p></div></details>
+
+    <details class="rv"><summary>What happens if I close the tab mid-run?<span class="pm"></span></summary>
+      <div class="ans"><p>Nothing is lost that was already written, and on Facebook a checkpoint lets
+        the next run resume rather than restart. Pressing Stop is cleaner: it writes the file
+        immediately with everything gathered and marks it PARTIAL.</p></div></details>
+
+    <details class="rv"><summary>Where does the exported data go?<span class="pm"></span></summary>
+      <div class="ans"><p>Your Downloads folder, and nowhere else. There is no server to send it to.
+        Settings, your YouTube key, the resume checkpoint and a short local run history live in your
+        browser's own extension storage, which the web pages you visit cannot read. Uninstalling
+        removes all of it. <a href="privacy.html" style="color:var(--iris)">Full privacy policy</a>.</p></div></details>
+
+    <details class="rv"><summary>Can I export a private group, or my own page's posts?<span class="pm"></span></summary>
+      <div class="ans"><p>If you can open the post and read its comments in your browser, the exporter
+        can read the same thing. If you cannot, neither can it. Being an admin of the page or a member
+        of the group is what grants the access — the extension adds none of its own.</p></div></details>
+
+    <details class="rv"><summary>How do I get it to the rest of the team?<span class="pm"></span></summary>
+      <div class="ans"><p>Through an <strong>unlisted</strong> Chrome Web Store listing: everyone with
+        the link can install it and get updates automatically, and it is not indexed or browsable by
+        anyone else. For testing before that, the repository loads directly as an unpacked
+        extension.</p></div></details>
+  </div>
+</section>
+
+<!-- ============================ get it ================================== -->
+<section class="wrap cta" id="get">
+  <div class="shell rv"><div class="core">
+    <span class="eyebrow"><span class="dot"></span> Free tier · unlisted · updates automatically</span>
+    <h2 style="margin-top:22px">Put it in your team's browser.</h2>
+    <p class="lede">One install, no configuration, and everyone's exports come out with the same
+      columns and the same honesty about what is missing.</p>
+    <div class="btns">
+      <a class="btn btn-primary" href="privacy.html">Privacy policy
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 2 8l3-4m6 0 3 4-3 4"/></svg></span>
+      </a>
+    </div>
+    <p class="fine">Chrome and Edge, desktop. Version 3.49.0. Free up to 200 comments per post; a subscription lifts the cap. <strong>The Web Store listing is not published yet</strong> — this page describes what ships when it is.</p>
+  </div></div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>Downthread — built for research teams working with public comment data.</div>
+    <nav>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:downthread.support@gmail.com">Contact</a>
+      <a href="#top">Back to top</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

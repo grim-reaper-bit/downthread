@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Downthread">
+  <defs>
+    <linearGradient id="bgs" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a2030"/>
+      <stop offset="1" stop-color="#0a0c12"/>
+    </linearGradient>
+    <linearGradient id="marks" x1="0" y1="0" x2=".3" y2="1">
+      <stop offset="0" stop-color="#b6c0ff"/>
+      <stop offset=".5" stop-color="#7c8cff"/>
+      <stop offset="1" stop-color="#4fe3c1"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="128" height="128" rx="26" fill="url(#bgs)"/>
+  <rect x="1" y="1" width="126" height="126" rx="25" fill="none"
+        stroke="#ffffff" stroke-opacity=".14" stroke-width="2"/>
+
+  <!-- The 16 and 32 px cut: two chevrons instead of three, heavier stroke, and no
+       faded tail — at toolbar size the third one turned into grey mud. -->
+  <g fill="none" stroke="url(#marks)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M28 46 L64 72 L100 46"/>
+    <path d="M44 90 L64 104 L84 90" stroke-opacity=".62"/>
+  </g>
+</svg>
