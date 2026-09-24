@@ -42,7 +42,7 @@
 
 <main class="wrap doc">
   <div class="rv">
-    <span class="eyebrow"><span class="dot"></span> Privacy policy · 15 September 2026</span>
+    <span class="eyebrow"><span class="dot"></span> Privacy policy · 23 September 2026</span>
     <h1 class="h-lead" style="margin:26px 0 24px">Your exports never leave your browser.</h1>
     <p class="lede">The comments you export are read in the tab you already have open and written
       straight to your Downloads folder. They are never uploaded, never sent to us, and never seen
@@ -56,10 +56,17 @@
     <h2>What it reads</h2>
     <p>When you export a post, the extension reads the comment data that page is already receiving
       from its own site — the same responses your browser loads as you scroll. It works only inside
-      your own signed-in session, on the tab you are looking at, and only on the sites listed in its
-      permissions. It cannot see anything you could not open yourself.</p>
+      your own signed-in session and only on the sites listed in its permissions. It cannot see
+      anything you could not open yourself.</p>
+    <p>To be exact about where it runs: its reader loads in every open tab on those sites, not only
+      the one you are looking at, because a page's comment responses arrive as you scroll and cannot
+      be captured after the fact. In a tab you never export from, what it sees is held in that tab's
+      memory and goes when the tab does. Exporting, and the run history below, begin only when you
+      start an export.</p>
     <p>The comments it reads contain other people's names, profile links and words. That information
-      is assembled in the tab, written to the file you asked for, and discarded when the tab closes.</p>
+      is assembled in the tab and written to the file you asked for. A copy of your most recent
+      exports is also kept in your own browser, as your run history (below), until you delete it or
+      newer exports replace it. It is never sent anywhere.</p>
 
     <h2>What it stores, and where</h2>
     <table class="tbl">
@@ -83,9 +90,12 @@
             starting over.</td>
         </tr>
         <tr>
-          <td>A short local history of your own runs</td>
+          <td>Your run history: your last 10 exports per platform — the post's address, when you
+            exported it, and the comments themselves (authors, profile links, text, replies)</td>
           <td data-label="Where">Your browser's extension storage</td>
-          <td data-label="Why">So you can see what you exported and when. It stays on this machine.</td>
+          <td data-label="Why">So you can download an export again or compare a re-run with the last
+            one. It stays on this machine and is never sent anywhere. Older exports are dropped as new
+            ones arrive; you can delete any of them from the panel.</td>
         </tr>
         <tr>
           <td>Your account: email address and a user id</td>
@@ -123,19 +133,28 @@
         whether you have paid — it has no idea which posts you export, or that you exported
         anything at all.</li>
       <li><strong>No tracking.</strong> No analytics, telemetry, crash reporting, cookies of its own,
-        advertising or advertising identifiers. Nothing records which pages you visit.</li>
+        advertising or advertising identifiers. Your browsing is not recorded; the only addresses
+        kept are those of the posts you chose to export, in your own run history.</li>
       <li><strong>No account required to use it.</strong> Signed out, the extension exports up to
         200 comments per post and stores nothing off your machine. An account exists to lift that
         limit, and for nothing else.</li>
-      <li><strong>No credentials.</strong> It never asks for, reads or stores your password, session
-        cookie or login token for any platform.</li>
+      <li><strong>It never asks for a password, and never stores a credential.</strong> To ask a
+        platform for the next page of comments, the exporter re-sends that page's own request, which
+        means the session fields the page put in it — Facebook's <code>fb_dtsg</code>, X's request
+        headers, and their equivalents elsewhere — are held in the tab's memory while the export
+        runs, and discarded with the tab. They are never written to disk, never put in an export,
+        and never sent anywhere but back to the platform that issued them. Your password and your
+        login cookie are never read at all.</li>
       <li><strong>No selling or sharing.</strong> Your email is used to identify your pass
         and for nothing else. It is not sold, not shared, not mailed to, and not used for any
         purpose unrelated to running your account.</li>
       <li><strong>No remote code.</strong> Everything it runs ships inside the extension package and
         is reviewable in the source repository. Nothing is fetched and executed at runtime.</li>
-      <li><strong>No background activity.</strong> It does nothing until you press export, and stops
-        when the run ends or you press Stop.</li>
+      <li><strong>Nothing is collected until you press Export.</strong> On the supported sites a
+        small reader does start with the page, and watches for the comment requests the page makes
+        anyway — that is how the exporter learns the shape of the request it will later repeat. It
+        reads nothing else, keeps nothing outside that tab, and exports nothing until you ask. It
+        stops when the run ends or you press Stop.</li>
     </ul>
 
     <h2>Network requests it makes</h2>
@@ -166,7 +185,9 @@
         <tr><td><code>activeTab</code></td>
           <td data-label="Reason">To act on the tab you pressed the toolbar button from, and no other.</td></tr>
         <tr><td><code>scripting</code></td>
-          <td data-label="Reason">To place the export panel and reader into that tab when you launch it.</td></tr>
+          <td data-label="Reason">To place the export panel into the tab you launch it in. The reader
+            itself loads in every open tab on the supported sites, as described above, so that a post's
+            comments can be captured as the page requests them.</td></tr>
         <tr><td><code>storage</code></td>
           <td data-label="Reason">To keep the settings, the YouTube key, the resume checkpoint and the
             run history described above, all locally.</td></tr>
@@ -204,7 +225,7 @@
     <p>If this policy changes, the updated version appears on this page and the date changes with it.</p>
     <p><strong>Contact:</strong> <a href="mailto:downthread.support@gmail.com">downthread.support@gmail.com</a>
       for support, questions about this policy, or to have your account deleted.</p>
-    <p class="dim" style="font-size:14.5px">Last updated 18 September 2026. Extension version 3.51.0.</p>
+    <p class="dim" style="font-size:14.5px">Last updated 23 September 2026. Extension version 3.53.0.</p>
   </section>
 </main>
 
