@@ -180,7 +180,12 @@ h3{font-size:19px;letter-spacing:-.02em;line-height:1.25}
  * Codex). `visibility:hidden` takes it out of the tab order; the script also sets `inert`
  * where the browser supports it. */
 .sheet{
-  position:fixed;inset:0;z-index:55;display:grid;align-content:center;gap:6px;
+  position:fixed;inset:0;z-index:55;display:grid;gap:6px;
+  /* Centred while the links fit; from the top once they don't. Plain `center` spills an overflow
+   * above the top padding too, where no scrolling reaches it: at 760 x 561 "How it works" sat behind
+   * the nav bar (review, Codex). `safe` keeps the overflow below. The first line is for browsers
+   * without `safe`. Check: node extension/tools/site-menu-check.js */
+  align-content:center;align-content:safe center;
   /* The page is locked while the menu is open, so the menu scrolls itself. The top padding clears
    * the nav bar, which sits above the sheet (review, Codex: at 740 x 320, the first link sat above
    * the screen and the last below it, with nothing to scroll). */
