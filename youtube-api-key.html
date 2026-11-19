@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get a YouTube API key for Downthread</title>
+<meta name="description" content="Six steps from no key to your first YouTube comment export: create a Google Cloud project, enable YouTube Data API v3, create and restrict an API key, and save it in the Downthread panel.">
+<meta name="theme-color" content="#050507">
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="mesh" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="nav">
+  <div class="nav-pill">
+    <a class="brand" href="index.html"><img src="icon.png" alt=""> Downthread</a>
+    <nav class="nav-links">
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#platforms">Platforms</a>
+      <a href="#steps">Steps</a>
+      <a href="#trouble">Troubleshooting</a>
+    </nav>
+    <a class="btn btn-primary" href="index.html#get">Install
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v9m0 0 3.4-3.4M8 11 4.6 7.6M2.5 13.5h11"/></svg></span>
+    </a>
+    <button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i></button>
+  </div>
+</div>
+
+<div class="sheet">
+  <a href="index.html#how">How it works</a>
+  <a href="index.html#platforms">Platforms</a>
+  <a href="#steps">Steps</a>
+  <a href="#trouble">Troubleshooting</a>
+  <a href="index.html#get">Install</a>
+</div>
+
+<main class="wrap doc" id="top">
+  <div class="rv">
+    <span class="eyebrow"><span class="dot"></span> Setup guide · YouTube</span>
+    <h1 class="h-lead" style="margin:26px 0 24px">Get a YouTube API key for Downthread</h1>
+    <p class="lede">Downthread exports YouTube comments through Google's official YouTube Data API,
+      and the API needs a key. You create the key in your own Google Cloud project, so every request
+      Downthread makes counts against <em style="font-style:normal;color:var(--fg)">your</em>
+      project's quota, not anyone else's. Facebook, TikTok, Instagram and X need no key.</p>
+    <p class="lede" style="margin-top:18px">Looking up the video costs one quota unit. Each page of
+      comment threads or replies also costs one unit, and Downthread requests up to 100 items per
+      page. A project's default allocation is 10,000 units a day;
+      <a class="guide-link" href="https://developers.google.com/youtube/v3/determine_quota_cost" target="_blank" rel="noopener">see Google's quota costs<span class="sr"> (opens in a new tab)</span></a>.</p>
+    <div class="links" style="margin-top:22px">
+      <a class="ext" href="https://developers.google.com/youtube/v3/getting-started" target="_blank" rel="noopener">YouTube Data API overview
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg><span class="sr">(opens in a new tab)</span></a>
+    </div>
+    <ul class="need" aria-label="Before you start">
+      <li>A Google account</li>
+      <li>Downthread installed in Chrome</li>
+      <li>A public YouTube video with comments</li>
+    </ul>
+  </div>
+
+  <ol class="gsteps" id="steps">
+    <li class="shell rv" id="step-1"><div class="core gstep">
+      <span class="num" aria-hidden="true">1</span>
+      <div>
+        <h2>Sign in and choose a project</h2>
+        <p>Sign in to Google Cloud Console with your Google account. In the project picker at the top
+          of the page, select an existing project or choose <span class="ui">New project</span> and
+          create one. Any name works; for example, <strong>Downthread YouTube</strong>.</p>
+        <p>Keep this project selected for every step that follows.</p>
+        <div class="links"><a class="ext" href="https://console.cloud.google.com/" target="_blank" rel="noopener">Open Google Cloud Console
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg><span class="sr">(opens in a new tab)</span></a></div>
+      </div>
+    </div></li>
+
+    <li class="shell rv" id="step-2"><div class="core gstep">
+      <span class="num" aria-hidden="true">2</span>
+      <div>
+        <h2>Enable YouTube Data API v3</h2>
+        <p>With that project selected, open the YouTube Data API v3 page and click
+          <span class="ui">Enable</span>. If the button says <span class="ui">Manage</span> instead,
+          the API is already enabled for this project and you can go on.</p>
+        <div class="links"><a class="ext" href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">Open YouTube Data API v3
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg><span class="sr">(opens in a new tab)</span></a></div>
+      </div>
+    </div></li>
+
+    <li class="shell rv" id="step-3"><div class="core gstep">
+      <span class="num" aria-hidden="true">3</span>
+      <div>
+        <h2>Create an API key</h2>
+        <p>In the same project, open <strong>APIs &amp; Services → Credentials</strong>, then choose
+          <span class="ui">Create credentials</span> → <span class="ui">API key</span>.</p>
+        <p>Downthread uses a standard API key, which is all that reading public comments needs. You do
+          not need an OAuth client or a service account.</p>
+        <p>Create a new key just for Downthread, even if the project already has one. Its restrictions
+          can then be set for Downthread without changing a key another application relies on.</p>
+        <div class="links"><a class="ext" href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">Open Credentials
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg><span class="sr">(opens in a new tab)</span></a></div>
+      </div>
+    </div></li>
+
+    <li class="shell rv" id="step-4"><div class="core gstep">
+      <span class="num" aria-hidden="true">4</span>
+      <div>
+        <h2>Restrict the key to YouTube, then copy it</h2>
+        <p>Under <strong>API restrictions</strong>, select <span class="ui">Restrict key</span> and
+          choose <strong>YouTube Data API v3</strong>. Complete the creation, save the restriction, and
+          copy the key string. If Google shows you the key before you have set the restriction, open
+          the key from the Credentials list to find API restrictions, then save.</p>
+        <p>Restricting the key means that, if it ever leaked, it could only be used for the YouTube
+          Data API.</p>
+        <p class="note"><b>Application restrictions.</b> Google recommends restricting a key both
+          by API and by where it is used, where the two are compatible. Downthread calls Google from the
+          extension's background worker, not from a website, and we have not verified an application
+          restriction that works with it. If you are unsure, leave Application restrictions at None and
+          keep the API restriction above. If you set one and the panel reports a restriction error, see
+          <a class="guide-link" href="#fix-key">Key rejected or restricted</a>.</p>
+        <div class="links" style="margin-top:18px"><a class="ext" href="https://cloud.google.com/docs/authentication/api-keys" target="_blank" rel="noopener">Google's API key instructions
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12"/></svg><span class="sr">(opens in a new tab)</span></a></div>
+      </div>
+    </div></li>
+
+    <li class="shell rv" id="step-5"><div class="core gstep">
+      <span class="num" aria-hidden="true">5</span>
+      <div>
+        <h2>Paste the key into the Downthread panel</h2>
+        <p>Open a public YouTube video with comments enabled. Once its comments load, Downthread
+          appears minimized at the top right of the page; click it to open the panel. You can also
+          click the Downthread icon in Chrome's toolbar and choose
+          <span class="ui">Open exporter panel</span>.</p>
+        <p>Paste the key into the <strong>YouTube Data API key</strong> field and click
+          <span class="ui">Save key</span>.</p>
+        <p>The key is stored in the extension's local browser storage, on this computer only, and is
+          sent only to Google with each request.</p>
+        <p class="note warn"><b>Paste your key only into the Downthread panel.</b> This page gives
+          instructions; it never asks for your key and has nowhere to put it.</p>
+        <div class="kps">
+          <figure>
+            <div class="kp" aria-hidden="true">
+              <div class="pn-h">
+                <svg class="mark" viewBox="0 0 24 24"><defs><linearGradient id="g-mark-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><path d="M4 4.5l8 6.5 8-6.5" fill="none" stroke="url(#g-mark-a)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/><path d="M4 11.5l8 7 8-7" fill="none" stroke="url(#g-mark-a)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <b>Downthread</b><span class="pn-pf" style="display:inline-flex;gap:5px;align-items:center"><svg class="yt" viewBox="0 0 24 17"><rect width="24" height="17" rx="4" fill="#ff0033"/><path d="M9.6 4.8v7.4l6.2-3.7z" fill="#fff"/></svg>YouTube</span>
+              </div>
+              <div class="kp-b">
+                <div class="ready"><i></i><span>Add your YouTube Data API key below to export.</span></div>
+                <div class="card">
+                  <div class="lbl">YouTube Data API key</div>
+                  <div class="inp">••••••••••••••••••••</div>
+                  <div class="row"><span class="ghost ring">Save key</span><span class="k">Stored in this browser only.</span></div>
+                </div>
+                <div class="go off">Export comments</div>
+              </div>
+            </div>
+            <figcaption>Before saving: the key field, with your pasted key hidden, and Save key.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div></li>
+
+    <li class="shell rv" id="step-6"><div class="core gstep">
+      <span class="num" aria-hidden="true">6</span>
+      <div>
+        <h2>Export, and confirm the key works</h2>
+        <p>Choose <span class="ui">CSV</span> or <span class="ui">JSON</span>, then click
+          <span class="ui">Export comments</span>.</p>
+        <p><strong>“Key saved.”</strong> confirms the key is stored in this browser. It does not yet
+          mean Google accepted it. The first sign of that is the line at the top of the panel, which
+          looks the video up and shows its title and comment count. A successful export, saved to your
+          Downloads folder, confirms the key works.</p>
+        <p>To replace the key later, look under <span class="ui">Export comments</span>: the line
+          <strong>API key saved.</strong> has a <span class="ui">Change</span> link beside it. Click it,
+          paste the new key and click <span class="ui">Save key</span> again.</p>
+        <div class="kps">
+          <figure>
+            <div class="kp" aria-hidden="true">
+              <div class="pn-h">
+                <svg class="mark" viewBox="0 0 24 24"><defs><linearGradient id="g-mark-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><path d="M4 4.5l8 6.5 8-6.5" fill="none" stroke="url(#g-mark-b)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/><path d="M4 11.5l8 7 8-7" fill="none" stroke="url(#g-mark-b)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <b>Downthread</b><span class="pn-pf" style="display:inline-flex;gap:5px;align-items:center"><svg class="yt" viewBox="0 0 24 17"><rect width="24" height="17" rx="4" fill="#ff0033"/><path d="M9.6 4.8v7.4l6.2-3.7z" fill="#fff"/></svg>YouTube</span>
+              </div>
+              <div class="kp-b">
+                <div class="ready ok"><i></i><span>“Example video” · 1,204 comments</span></div>
+                <div class="row" style="margin-top:14px"><div class="seg"><span class="on">CSV</span><span>JSON</span></div><span class="k">☑ Include replies</span></div>
+                <div class="go">Export comments</div>
+                <div class="row"><span class="k">API key saved.</span><span class="lnk ring">Change</span></div>
+                <div class="msg">Key saved.</div>
+              </div>
+            </div>
+            <figcaption>After saving: Export comments is ready, and Change sits under it. Example video.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div></li>
+  </ol>
+
+  <section id="trouble" style="padding-block:var(--sect) 0">
+    <div class="sect-head rv" style="margin-bottom:0">
+      <span class="eyebrow">Troubleshooting</span>
+      <h2 style="margin:0">If the export doesn't start.</h2>
+      <p class="lede">The panel says what went wrong in plain words. Find its message below and do the
+        one thing listed.</p>
+    </div>
+
+    <div class="fixes">
+      <div class="shell rv" id="fix-api"><div class="core fix">
+        <h3>API not enabled</h3>
+        <p class="says">The YouTube Data API v3 is not enabled for this key's Google Cloud project.</p>
+        <p><span class="do">Do this</span> In the project picker, select the project you created the key
+          in, open <a class="guide-link" href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">YouTube Data API v3<span class="sr"> (opens in a new tab)</span></a>,
+          click Enable, then wait a few minutes and export again.</p>
+      </div></div>
+
+      <div class="shell rv" id="fix-key"><div class="core fix">
+        <h3>Key rejected or restricted</h3>
+        <p class="says">The YouTube API key was rejected. …</p>
+        <p><span class="do">Do this</span> Check the key itself first. In
+          <a class="guide-link" href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">Credentials<span class="sr"> (opens in a new tab)</span></a>,
+          with the key's project selected, confirm the key is listed, copy the whole string again, then
+          click Change in the panel and paste it. If the key is gone or has expired, create a new one
+          (step 3).</p>
+        <p class="says" style="margin-top:18px">YouTube refused this request under the API key's restrictions. …</p>
+        <p><span class="do">Do this</span> Leave that key as it is, since another application may rely on
+          its restrictions. In the same project, create a new key just for Downthread (step 3), restrict
+          it to YouTube Data API v3 with no application restriction (step 4), then click Change in the
+          panel and paste the new key. We have not verified an application restriction that works with
+          the extension.</p>
+      </div></div>
+
+      <div class="shell rv" id="fix-quota"><div class="core fix">
+        <h3>Quota exceeded</h3>
+        <p class="says">The daily YouTube API quota is used up. It resets at midnight Pacific time.</p>
+        <p><span class="do">Do this</span> Export again after midnight Pacific time. Comments captured
+          before the limit are already saved, marked partial, and Recent exports in the panel can download
+          them again without using quota.</p>
+      </div></div>
+
+      <div class="shell rv" id="fix-off"><div class="core fix">
+        <h3>Comments disabled on the video</h3>
+        <p class="says">Comments are turned off on this video.</p>
+        <p><span class="do">Do this</span> Open a different video whose comments you can see below it,
+          and export there. A livestream has live chat instead of comments, and live chat is not part
+          of an export.</p>
+      </div></div>
+    </div>
+
+    <p class="step-note rv">Still stuck? Copy the panel's message and email
+      <a class="guide-link" href="mailto:downthread.support@gmail.com">downthread.support@gmail.com</a>.
+      Never include your API key.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>Downthread — built for research teams working with public comment data.</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="#top">Back to top</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

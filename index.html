@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Downthread — a post's comment section, in one file</title>
-<meta name="description" content="A Chrome extension for research teams. Export every comment and reply from a Facebook, YouTube, TikTok, Instagram or X post to CSV or JSON — with authors, timestamps, likes and thread structure — entirely inside your own browser.">
+<meta name="description" content="A Chrome extension for research teams. Export comments and replies to CSV or JSON, with a report showing what was captured. Facebook and YouTube; TikTok, Instagram and X in beta. Authors, timestamps, likes and thread structure, entirely inside your own browser.">
 <meta name="theme-color" content="#050507">
 <link rel="icon" href="icon.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Downthread — a post's comment section, in one file">
-<meta property="og:description" content="Export a whole comment section to CSV or JSON, in your own browser. Facebook, YouTube, TikTok, Instagram and X. The comments never leave your browser, and a run report says what it missed.">
+<meta property="og:description" content="Export comments and replies to CSV or JSON, with a report showing what was captured. Facebook and YouTube; TikTok, Instagram and X in beta. The comments never leave your browser.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +27,7 @@
       <a href="#how">How it works</a>
       <a href="#data">What you get</a>
       <a href="#platforms">Platforms</a>
+      <a href="#bulk">Bulk export</a>
       <a href="#limits">Limits</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -41,6 +42,7 @@
   <a href="#how">How it works</a>
   <a href="#data">What you get</a>
   <a href="#platforms">Platforms</a>
+  <a href="#bulk">Bulk export</a>
   <a href="#limits">Limits</a>
   <a href="#get">Install</a>
 </div>
@@ -50,12 +52,12 @@
     <div class="rv">
       <span class="eyebrow"><span class="dot"></span> five platforms · comments stay in your browser</span>
       <h1 class="h-lead">A whole comment section. <em>In one file.</em></h1>
-      <p class="lede">Export the whole comment section — replies, authors, timestamps, likes, thread
-        structure — from Facebook, YouTube, TikTok, Instagram or X. It runs inside the tab you already
+      <p class="lede">Export comments and replies — authors, timestamps, likes, thread structure —
+        to CSV or JSON, with a report showing what was captured. From Facebook and YouTube, and in beta from TikTok, Instagram and X. It runs inside the tab you already
         have open, under your own session. The comments never leave your browser: they are read on the
         page and written straight to your file. An account is only needed to lift the free limit.</p>
       <div class="btns">
-        <a class="btn btn-primary" href="#get">Get the extension
+        <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/bbjhkmainlkhbjobciniddmndbjagfmn">Get the Chrome extension
           <span class="ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v9m0 0 3.4-3.4M8 11 4.6 7.6M2.5 13.5h11"/></svg></span>
         </a>
         <a class="btn" href="#how">See how it works
@@ -70,27 +72,54 @@
       </div>
     </div>
 
-    <div class="mock shell rv" data-run>
-      <div class="core">
-        <div class="mock-bar">
-          <span></span><span></span><span></span>
-          <b>downthread</b>
-          <div class="live"><i></i> running</div>
-        </div>
-        <div class="mock-body">
-          <div class="mock-stat"><b data-to="928">0</b><span>comments exported</span></div>
-          <div class="bar" style="--p:.851"><i></i></div>
-          <div class="mock-meta"><span>1,091 claimed by the page</span><span>85%</span></div>
-          <ul class="mock-log">
-            <li><s>&#10003;</s> reply phase 1.2s — 214 threads by token</li>
-            <li><s>&#10003;</s> comment rail never needed</li>
-            <li class="warn"><s>!</s> 163 not served — hidden, spam-collapsed or removed</li>
-            <li><s>&#10003;</s> wrote downthread-facebook-928.csv</li>
+    <!-- The product in one picture: a post, the panel over it, and the file it writes. Three layers
+         in CSS 3D on desktop, a flat overlapping stack on phones. Every word is in the markup, so it
+         reads the same with the script blocked; the script only adds the pointer tilt. -->
+    <figure class="demo rv" data-demo>
+      <div class="stage">
+        <div class="layer l-post">
+          <span class="tag">Example post</span>
+          <div class="post-h"><i class="av" style="--h:212">R</i><div><b>Riverside Library</b><span>2 h · Public</span></div></div>
+          <p class="post-t">We're opening on Sundays from 1 March. Which branch should go first?</p>
+          <div class="post-m"><span>120 comments</span></div>
+          <ul class="thread">
+            <li><i class="av" style="--h:330">M</i><div><b>Mara Santos</b><p>Eastgate, please. It's the only one near the bus line.</p></div></li>
+            <li class="rep follow" data-follow><i class="av" style="--h:212">R</i><div><b>Riverside Library <span class="pin">A</span></b><p>Eastgate is first on the list. Sundays 10–4.</p></div></li>
+            <li class="rep d-extra"><i class="av" style="--h:150">J</i><div><b>Jon Park</b><p>And Northfield after that?</p></div></li>
+            <li class="d-extra"><i class="av" style="--h:40">K</i><div><b>Ken Oduya</b><p>Will the reading room be open too?</p></div></li>
           </ul>
-          <div class="mock-tags"><b>partial</b><b>facebook.com</b><b>csv</b><b>replies on</b></div>
+        </div>
+
+        <div class="layer l-panel">
+          <div class="pn-h">
+            <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="hero-mark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><path d="M4 4.5l8 6.5 8-6.5" fill="none" stroke="url(#hero-mark)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/><path d="M4 11.5l8 7 8-7" fill="none" stroke="url(#hero-mark)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <b>Downthread</b><span class="pn-pf">Example</span>
+          </div>
+          <div class="pn-b">
+            <div class="pn-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Export saved</div>
+            <div class="pn-big"><b data-count="112">112</b><span>comments exported</span></div>
+            <div class="pn-split d-extra"><div><b>74</b><span>Top-level</span></div><div><b>38</b><span>Replies</span></div></div>
+            <div class="pn-cov"><b>⚠ Coverage uncertain</b><span>The platform displays 120 comments. This export contains 112.</span></div>
+            <div class="pn-go d-extra">Download CSV</div>
+          </div>
+        </div>
+
+        <div class="layer l-csv">
+          <div class="csv-h"><span class="csv-f">downthread-example-112.csv</span><span class="tag">Example data</span></div>
+          <table>
+            <thead><tr><th>author</th><th>text</th><th>depth</th><th class="d-extra">parent_comment_id</th></tr></thead>
+            <tbody>
+              <tr><td>Mara Santos</td><td>Eastgate, please. It's the only…</td><td>0</td><td class="d-extra">—</td></tr>
+              <tr class="follow" data-follow><td>Riverside Library <span class="pin">A</span></td><td>Eastgate is first on the list.…</td><td>1</td><td class="d-extra">c_01 (Mara)</td></tr>
+              <tr class="d-extra"><td>Jon Park</td><td>And Northfield after that?</td><td>1</td><td>c_01 (Mara)</td></tr>
+              <tr class="d-extra"><td>Ken Oduya</td><td>Will the reading room be open…</td><td>0</td><td>—</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
-    </div>
+      <figcaption><span class="pin">A</span> Follow one reply: the library's answer to Mara becomes a row
+        with depth 1 and Mara's comment as its parent. Example data, not a real post.</figcaption>
+    </figure>
   </div>
 </header>
 
@@ -100,9 +129,9 @@
     <ul>
       <li style="--c:var(--fb)"><i></i> Facebook</li>
       <li style="--c:var(--yt)"><i></i> YouTube</li>
-      <li style="--c:var(--tt)"><i></i> TikTok</li>
-      <li style="--c:var(--ig)"><i></i> Instagram</li>
-      <li style="--c:var(--x)"><i></i> X</li>
+      <li style="--c:var(--tt)"><i></i> TikTok <span class="beta">beta</span></li>
+      <li style="--c:var(--ig)"><i></i> Instagram <span class="beta">beta</span></li>
+      <li style="--c:var(--x)"><i></i> X <span class="beta">beta</span></li>
     </ul>
   </div>
 </div>
@@ -204,14 +233,14 @@
       <div class="term">
         <b>Downthread — Facebook run report</b><br>
         post &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facebook.com/…/posts/1091883<br>
-        claimed &nbsp;&nbsp;1,091 · <b>exported 928</b><br>
+        displayed 1,091 · <b>exported 928</b><br>
         replies &nbsp;&nbsp;214 threads, <s>all read to the end</s><br>
-        status &nbsp;&nbsp;&nbsp;<u>PARTIAL</u><br>
+        status &nbsp;&nbsp;&nbsp;saved · <u>coverage uncertain</u><br>
         <br>
-        <i>Where the rest went</i><br>
-        163 &nbsp;never served by Facebook<br>
+        <i>What this run can show</i><br>
+        163 &nbsp;count difference — the count alone does not say why<br>
         0 &nbsp;&nbsp;&nbsp;threads left open<br>
-        0 &nbsp;&nbsp;&nbsp;duplicates skipped
+        0 &nbsp;&nbsp;&nbsp;requests failed
       </div>
     </div></div>
 
@@ -245,7 +274,10 @@
     <span class="eyebrow">Platforms</span>
     <h2>Five sites, five different sets of rules.</h2>
     <p class="lede">Each one gives up its comments differently, and each one holds something back.
-      Here is exactly what to expect before you plan a collection round.</p>
+      Here is exactly what to expect before you plan a collection round. TikTok, Instagram and X
+      are in beta: they work, but they can miss comments that would come through on Facebook or
+      YouTube, and they can break when the site changes. Whatever the platform, the run report says
+      how many comments were exported against the platform's own count.</p>
   </div>
 
   <div class="plats">
@@ -255,9 +287,10 @@
         <div class="yes"><dt>You get</dt><dd>Posts, Reels, photos, videos and live replays. Comments and
           replies with their full thread structure — reply threads fetched by their own token
           rather than by clicking through the rail.</dd></div>
-        <div><dt>Held back</dt><dd>Facebook's own count includes hidden, spam-collapsed and
-          blocked-account comments it will not serve. The count and the list disagree on most large
-          posts; the report explains the gap instead of hiding it.</dd></div>
+        <div><dt>Held back</dt><dd>On large posts, the count Facebook displays and the comments it
+          serves often differ. The report shows both numbers, the count difference, and whether the
+          list was read to its end or a request failed. The count alone can't say why the totals
+          differ.</dd></div>
       </dl>
     </div></div>
 
@@ -265,25 +298,27 @@
       <div class="plat-h"><i></i><h3>YouTube</h3></div>
       <dl>
         <div class="yes"><dt>You get</dt><dd>Videos and Shorts, comments and complete reply threads,
-          through the official YouTube Data API with your own key. The cleanest data of the five.</dd></div>
+          through the official YouTube Data API with your own key. The cleanest data of the five.
+          <a class="guide-link" href="youtube-api-key.html">Set up your YouTube API key <span aria-hidden="true">→</span></a></dd></div>
         <div><dt>Held back</dt><dd>Your daily API quota is the ceiling. Livestreams have no comments
           at all — only live chat, which is not part of an export.</dd></div>
       </dl>
     </div></div>
 
     <div class="shell rv" style="--c:var(--tt)"><div class="core plat">
-      <div class="plat-h"><i></i><h3>TikTok</h3></div>
+      <div class="plat-h"><i></i><h3>TikTok</h3> <span class="beta">beta</span></div>
       <dl>
-        <div class="yes"><dt>You get</dt><dd>Comments and replies on a video or photo post, with
-          reply threads opened and read to their end.</dd></div>
-        <div><dt>Held back</dt><dd>TikTok signs its requests, so the exporter often has to open
-          threads on the page instead of replaying a request. Deleted and hidden replies are never
-          served to anyone.</dd></div>
+        <div class="yes"><dt>You get</dt><dd>Comments and replies on a video or photo post.
+          Downthread follows TikTok's own comment and reply requests page by page, without
+          scrolling, and reads each reply thread until TikTok ends it.</dd></div>
+        <div><dt>Held back</dt><dd>When TikTok refuses a request or a page stops advancing, the
+          report names the list or thread left unresolved. An optional "Try scrolling to recover
+          more" scrolls the comment list for a limited time, then reads the requests again.</dd></div>
       </dl>
     </div></div>
 
     <div class="shell rv" style="--c:var(--ig)"><div class="core plat">
-      <div class="plat-h"><i></i><h3>Instagram</h3></div>
+      <div class="plat-h"><i></i><h3>Instagram</h3> <span class="beta">beta</span></div>
       <dl>
         <div class="yes"><dt>You get</dt><dd>Posts and reels, comments with their replies attached to
           the parent, and the caption's owner resolved properly.</dd></div>
@@ -294,7 +329,7 @@
     </div></div>
 
     <div class="shell rv wide" style="--c:var(--x)"><div class="core plat">
-      <div class="plat-h"><i></i><h3>X</h3></div>
+      <div class="plat-h"><i></i><h3>X</h3> <span class="beta">beta</span></div>
       <dl>
         <div class="yes"><dt>You get</dt><dd>Replies to a post and the replies beneath those, nested
           to whatever depth the conversation reaches, plus — if you ask for them — the replies X
@@ -305,6 +340,55 @@
       </dl>
     </div></div>
   </div>
+</section>
+
+<!-- ============================ bulk export ============================= -->
+<section class="wrap" id="bulk">
+  <div class="sect-head rv">
+    <span class="eyebrow">Bulk export · add-on</span>
+    <h2>Paste every link. Walk away.</h2>
+    <p class="lede">For a collection round of many Facebook, Instagram and TikTok posts. Paste the list into Chrome's side
+      panel and Downthread opens each post in turn, in a tab beside it, exports it the same way a single
+      export does, and saves one merged file with a report on every link.</p>
+  </div>
+
+  <div class="steps">
+    <div class="shell rv"><div class="core step">
+      <span class="n">01</span>
+      <h3>Paste the links</h3>
+      <p>Posts, Reels, videos and share links, in any shape: one per line, several on a line, or rows
+        copied out of a spreadsheet: Facebook posts, Reels and videos, Instagram posts and reels, and TikTok videos and photo posts, all in one batch. Duplicates and links that are not one post are pointed out.</p>
+    </div></div>
+    <div class="shell rv"><div class="core step">
+      <span class="n">02</span>
+      <h3>Start the batch</h3>
+      <p>CSV or JSON, replies on or off, and a pause between posts if you want a gentler pace. Each post
+        runs at Safe speed. Stop, Resume and "skip posts already exported" work across sittings.</p>
+    </div></div>
+    <div class="shell rv"><div class="core step">
+      <span class="n">03</span>
+      <h3>Collect one file</h3>
+      <p>Every post's comments in one merged file, split into parts for a very large batch, and a batch
+        report that says what happened to each link: done, partial, skipped or failed, and why.</p>
+    </div></div>
+  </div>
+
+  <div class="nots">
+    <div class="shell rv"><div class="core pad card">
+      <h3>An add-on to a pass</h3>
+      <p>Bulk export works while a Premium pass is running and ends with it. Bought on its own, it costs
+        about half a pass and is charged only for the days your pass has left. When you buy or renew a
+        pass, you can take it as Premium + Bulk.</p>
+    </div></div>
+    <div class="shell rv"><div class="core pad card">
+      <h3>Your first batch is free</h3>
+      <p>Sign in and one batch of up to three links runs free, with no comment limit, so you can see the
+        merged file before paying. The trial is once per account; the links you paste are never sent to
+        us.</p>
+    </div></div>
+  </div>
+  <p class="step-note rv">Facebook, Instagram and TikTok. Find it under Bulk export in the
+    toolbar popup.</p>
 </section>
 
 <!-- ============================ limits ================================== -->
@@ -327,7 +411,7 @@
         <div class="flag"><b>Refused</b><p>The platform answered the request with an error or an empty page.</p></div>
         <div class="flag"><b>Rate limit</b><p>The platform asked for a pause. The run stops rather than hammering it.</p></div>
         <div class="flag"><b>Stopped</b><p>You pressed Stop. Everything gathered is still written out.</p></div>
-        <div class="flag"><b>Not served</b><p>Hidden, spam-collapsed, blocked or deleted — counted by the platform, never sent.</p></div>
+        <div class="flag"><b>Count differs</b><p>The platform displays more comments than the export contains. The report gives both numbers; the count alone can't say why.</p></div>
       </div>
     </div>
   </div>
@@ -382,14 +466,15 @@
       <div class="ans"><p>For YouTube, yes. Create a project in the Google Cloud console, enable the
         <strong>YouTube Data API v3</strong>, generate an API key and paste it into the panel once.
         It is stored in your own browser and used only to call YouTube. The other four platforms need
-        no key at all.</p></div></details>
+        no key at all.</p>
+        <p><a class="guide-link" href="youtube-api-key.html">Set up your YouTube API key <span aria-hidden="true">→</span></a>
+          — six steps, from no key to your first export.</p></div></details>
 
-    <details class="rv"><summary>Why does Facebook's comment count never match the export?<span class="pm"></span></summary>
-      <div class="ans"><p>Because the number under the post is not a count of comments you can read.
-        It includes comments hidden by the page, ones collapsed as spam, ones from accounts that have
-        blocked you, and ones since deleted. Facebook counts them and then declines to send them. The
-        report gives you both numbers and the gap between them, which is the honest thing to publish
-        beside a dataset.</p></div></details>
+    <details class="rv"><summary>Why can Facebook's count differ from my export?<span class="pm"></span></summary>
+      <div class="ans"><p>The report shows the count Facebook displayed, how many comments Downthread
+        exported, and whether pagination ended or a request failed. The count alone can't tell us why
+        the totals differ. Publish both numbers and the count difference beside the dataset, rather
+        than a reason the evidence doesn't support.</p></div></details>
 
     <details class="rv"><summary>What happens if I close the tab mid-run?<span class="pm"></span></summary>
       <div class="ans"><p>Nothing is lost that was already written, and on Facebook a checkpoint lets
@@ -408,6 +493,13 @@
         can read the same thing. If you cannot, neither can it. Being an admin of the page or a member
         of the group is what grants the access — the extension adds none of its own.</p></div></details>
 
+    <details class="rv"><summary>What does bulk export cost, and what does the free trial include?<span class="pm"></span></summary>
+      <div class="ans"><p>Bulk export is an add-on to a Premium pass, not a separate subscription. Added
+        to a pass that is already running, it costs about half the pass's price, pro-rated to the days
+        that pass has left, and it ends when the pass does. Buying or renewing a pass, you can choose
+        Premium + Bulk. Neither renews itself. Signed in, your first batch of up to three links is free
+        and has no comment limit; after that, a batch needs the add-on.</p></div></details>
+
     <details class="rv"><summary>How do I get it to the rest of the team?<span class="pm"></span></summary>
       <div class="ans"><p>Through an <strong>unlisted</strong> Chrome Web Store listing: everyone with
         the link can install it and get updates automatically, and it is not indexed or browsable by
@@ -421,8 +513,8 @@
   <div class="shell rv"><div class="core">
     <span class="eyebrow"><span class="dot"></span> Free tier · unlisted · updates automatically</span>
     <h2 style="margin-top:22px">Put it in your team's browser.</h2>
-    <p class="lede">One install, no configuration, and everyone's exports come out with the same
-      columns and the same honesty about what is missing.</p>
+    <p class="lede">One install, and everyone's exports come out with the same columns and the
+      same honesty about what is missing.</p>
     <div class="btns">
       <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/bbjhkmainlkhbjobciniddmndbjagfmn">Add to Chrome
         <span class="ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v9m0 0 3.4-3.4M8 11 4.6 7.6M2.5 13.5h11"/></svg></span>
@@ -431,7 +523,9 @@
         <span class="ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 2 8l3-4m6 0 3 4-3 4"/></svg></span>
       </a>
     </div>
-    <p class="fine">Chrome and Edge, desktop. Free up to 200 comments per post. A pass lifts the cap for 30 days or a year — it does not renew itself, and you are never charged again without asking. Pay with GCash, Maya, GrabPay, QR Ph or a card.</p>
+    <p class="fine key-note">YouTube users add their own API key once.
+      <a class="guide-link" href="youtube-api-key.html">Set up your YouTube API key <span aria-hidden="true">→</span></a></p>
+    <p class="fine">Chrome and Edge 116 or later, desktop. Free up to 200 comments per post. A pass lifts the cap for 30 days or a year — it does not renew itself, and you are never charged again without asking. Bulk export is an add-on to a pass; the first batch of three links is free. Pay with GCash, Maya, GrabPay, QR Ph or a card.</p>
   </div></div>
 </section>
 

@@ -208,41 +208,103 @@ h3{font-size:19px;letter-spacing:-.02em;line-height:1.25}
 .hero-foot div{font:500 12px/1.5 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--fg-3)}
 .hero-foot b{display:block;font:500 22px/1.2 var(--sans);letter-spacing:-.02em;color:var(--fg);text-transform:none}
 
-/* the panel mock ------------------------------------------------------- */
-/* The reveal writes transform, so the tilt has to be restated on both ends of it. */
-.mock{transform:rotate(1.1deg)}
-.mock.rv{transform:translateY(30px) rotate(1.1deg)}
-.mock.rv.in{transform:rotate(1.1deg)}
-.mock .core{padding:0;overflow:hidden}
-.mock-bar{
-  display:flex;align-items:center;gap:9px;padding:14px 18px;border-bottom:1px solid var(--hair-soft);
-  background:rgba(255,255,255,.02);
+/* the product demo ---------------------------------------------------- */
+/* Three layers, back to front: the post as a visitor sees it, the Downthread panel floating over
+ * it, and the CSV it writes. The panel layer uses the real panel's tokens (src/panel-style.js,
+ * dark theme, the blue-to-violet Facebook accent) and its system font, not the site's Geist, so
+ * it looks like the thing you install. The pose is static CSS; the script only nudges --tx/--ty
+ * with the pointer on desktop. The reveal writes transform on .demo, so the pose lives on .stage. */
+.demo{margin:0;perspective:1600px;perspective-origin:50% 35%}
+.stage{
+  --tx:0;--ty:0;
+  position:relative;height:600px;transform-style:preserve-3d;
+  pointer-events:none;   /* the post sits behind this plane: let the layers take the pointer */
+  transform:rotateX(calc(6deg - var(--ty) * 3deg)) rotateY(calc(-12deg + var(--tx) * 5deg));
+  transition:transform .8s var(--ease-out);
 }
-.mock-bar span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.13)}
-.mock-bar b{margin-left:6px;font:500 12.5px/1 var(--mono);letter-spacing:.04em;color:var(--fg-2)}
-.mock-bar .live{margin-left:auto;display:flex;align-items:center;gap:7px;font:500 10.5px/1 var(--mono);
-  letter-spacing:.14em;text-transform:uppercase;color:var(--mint)}
-.mock-bar .live i{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse 1.9s var(--ease) infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.72)}}
-.mock-body{padding:22px}
-.mock-stat{display:flex;align-items:baseline;gap:12px}
-.mock-stat b{font:500 clamp(38px,5.4vw,54px)/1 var(--sans);letter-spacing:-.045em}
-.mock-stat span{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3)}
-.bar{height:5px;border-radius:99px;background:rgba(255,255,255,.07);margin:20px 0 8px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;border-radius:99px;
-  background:linear-gradient(90deg,var(--iris),var(--mint));
-  transition:transform 2.6s var(--ease);transform-origin:left;transform:scaleX(0)}
-.bar.go i{width:100%;transform:scaleX(var(--p,.86))}
-.mock-meta{display:flex;justify-content:space-between;font:500 11.5px/1 var(--mono);color:var(--fg-3);letter-spacing:.04em}
-.mock-log{margin-top:20px;border-top:1px solid var(--hair-soft);padding-top:16px;display:grid;gap:9px}
-.mock-log li{display:flex;gap:10px;font:400 13px/1.45 var(--mono);color:var(--fg-2);
-  opacity:0;transform:translateY(8px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-.mock-log li.on{opacity:1;transform:none}
-.mock-log li s{text-decoration:none;color:var(--mint)}
-.mock-log li.warn s{color:var(--amber)}
-.mock-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:20px}
-.mock-tags b{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
-  padding:7px 11px;border-radius:999px;border:1px solid var(--hair-soft);color:var(--fg-3)}
+.layer{
+  position:absolute;pointer-events:auto;border-radius:14px;
+  font:400 13px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  letter-spacing:0;
+}
+.layer p{margin:0}
+.tag{display:inline-block;font:600 9.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 7px;border-radius:99px;color:#5b21b6;background:#ede9fe;white-space:nowrap}
+.pin{display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;flex:none;
+  background:#7c3aed;color:#fff;font:700 9.5px/1 -apple-system,"Segoe UI",sans-serif;vertical-align:1px;margin-left:3px}
+.av{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;
+  font-weight:600;font-size:12px;font-style:normal;color:#fff;background:hsl(var(--h) 52% 46%)}
+
+/* back: the post */
+.l-post{left:0;top:0;width:58%;padding:16px 46px 16px 16px;color:#14171c;background:#f4f5f7;
+  border:1px solid #fff;transform:translateZ(-60px);
+  box-shadow:0 1px 2px rgba(0,0,0,.25),0 40px 70px -30px rgba(0,0,0,.9)}
+.l-post>.tag{margin-bottom:12px}
+.post-h{display:flex;gap:10px;align-items:center}
+.post-h b{display:block;font-weight:600;font-size:13.5px;line-height:1.2}
+.post-h span{font-size:11.5px;color:#667085}
+.post-t{margin:10px 0 8px !important;font-size:13.5px}
+.post-m{display:flex;justify-content:space-between;font-size:11.5px;color:#4a5260;padding-bottom:9px;border-bottom:1px solid #e2e5ea}
+.thread{display:grid;gap:7px;margin-top:10px}
+.thread li{display:flex;gap:8px;align-items:flex-start;transition:opacity .4s var(--ease)}
+.thread .av{width:24px;height:24px;font-size:10.5px}
+.thread li>div{background:#e7e9ee;border-radius:12px;padding:5px 10px 6px;min-width:0;transition:box-shadow .4s var(--ease)}
+.thread b{font-size:12px;font-weight:600}
+.thread p{font-size:12.5px;line-height:1.4}
+.thread .rep{margin-left:32px}
+.thread .follow>div{background:#f3efff;box-shadow:0 0 0 2px #8b5cf6}
+
+/* middle: the panel */
+.l-panel{right:0;top:36px;width:50%;overflow:hidden;color:#ececef;font-size:14px;
+  background:radial-gradient(110% 46% at 100% 0%,rgba(37,99,235,.24),transparent 62%),#18191c;
+  border:1px solid rgba(255,255,255,.16);transform:translateZ(30px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 1px 2px rgba(0,0,0,.45),0 40px 70px -20px rgba(0,0,0,.9)}
+.l-panel::before{content:"";display:block;height:3px;background:linear-gradient(90deg,#2563eb,#7c3aed)}
+.pn-h{display:flex;align-items:center;gap:8px;padding:9px 14px 10px;border-bottom:1px solid rgba(255,255,255,.1)}
+.pn-h .mark{width:20px;height:20px;flex:none}
+.pn-h b{font-weight:700;font-size:15px;letter-spacing:-.02em}
+.pn-pf{padding:3px 8px;border-radius:8px;background:#202226;border:1px solid rgba(255,255,255,.1);
+  font-weight:600;font-size:11.5px;color:#b3b8c0}
+.pn-b{padding:13px 14px 14px}
+.pn-title{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
+.pn-title svg{width:14px;height:14px;padding:4px;border-radius:7px;box-sizing:content-box;color:#fff;
+  background:linear-gradient(90deg,#2563eb,#7c3aed)}
+.pn-big{margin-top:10px}
+.pn-big b{display:block;font-weight:800;font-size:40px;line-height:1.02;letter-spacing:-.03em;font-variant-numeric:tabular-nums;
+  background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pn-big span{font-size:12.5px;color:#b3b8c0}
+.pn-split{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.pn-split div{padding:7px 8px;border-radius:10px;background:#202226;border:1px solid rgba(255,255,255,.06);text-align:center}
+.pn-split b{display:block;font-weight:700;font-size:17px;font-variant-numeric:tabular-nums}
+.pn-split span{font-size:11.5px;color:#b3b8c0}
+.pn-cov{margin-top:10px;padding:9px 11px;border-radius:10px;background:rgba(251,191,36,.13);font-size:12.5px;line-height:1.42}
+.pn-cov b{display:block;color:#fbbf24;font-weight:600;margin-bottom:2px}
+.pn-go{margin-top:12px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:600;font-size:13.5px;color:#fff;
+  background:linear-gradient(90deg,#2563eb,#7c3aed);box-shadow:0 3px 0 #312e81,inset 0 1px 0 rgba(255,255,255,.18)}
+
+/* front: the file */
+.l-csv{left:5%;bottom:0;width:84%;overflow:hidden;color:#14171c;background:#fff;border:1px solid #d7dbe2;
+  transform:translateZ(100px);box-shadow:0 1px 2px rgba(0,0,0,.3),0 44px 80px -24px rgba(0,0,0,.95)}
+.csv-h{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f5f6f8;border-bottom:1px solid #e2e5ea}
+.csv-f{font:500 11.5px/1.2 var(--mono);color:#4a5260;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.csv-h .tag{margin-left:auto}
+.l-csv table{width:100%;border-collapse:collapse;table-layout:fixed;font:400 11.5px/1.35 var(--mono)}
+.l-csv th{text-align:left;font-weight:500;font-size:10.5px;color:#4a5260;background:#fafbfc;padding:6px 10px;
+  border-bottom:1px solid #e2e5ea;border-right:1px solid #eef0f3}
+.l-csv th:nth-child(1){width:27%} .l-csv th:nth-child(2){width:35%} .l-csv th:nth-child(3){width:11%}
+.l-csv td{padding:6px 10px;border-bottom:1px solid #eef0f3;border-right:1px solid #eef0f3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .4s var(--ease)}
+.l-csv tr:last-child td{border-bottom:0}
+.l-csv tr.follow td{background:#f3efff}
+.l-csv tr.follow td:first-child{box-shadow:inset 3px 0 0 #8b5cf6}
+.l-csv .pin{font-family:-apple-system,"Segoe UI",sans-serif}
+
+/* Pointing at either end of the followed reply quiets everything else. */
+.stage.trace .thread li:not(.follow),.stage.trace tbody tr:not(.follow) td{opacity:.35}
+
+.demo figcaption{display:flex;gap:10px;align-items:flex-start;margin-top:22px;max-width:56ch;
+  font-size:13.5px;line-height:1.5;color:var(--fg-2)}
+.demo figcaption .pin{margin:2px 0 0}
 
 /* ---------- platform rail --------------------------------------------- */
 .rail{padding-block:0 var(--sect)}
@@ -319,6 +381,9 @@ h3{font-size:19px;letter-spacing:-.02em;line-height:1.25}
 .plat dt{font:500 10.5px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--fg-3);margin-bottom:6px}
 .plat dd{margin:0;font-size:15px;color:var(--fg-2);line-height:1.55}
 .plat .yes dd{color:var(--fg)}
+/* Beta (TikTok, Instagram, X): they work, but miss more than Facebook and YouTube and break when the site changes. */
+.beta{flex:none;font:500 9.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--fg-3);
+  border:1px solid currentColor;border-radius:99px;padding:3px 7px}
 
 /* ---------- honesty --------------------------------------------------- */
 .honesty{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,64px);align-items:start}
@@ -407,17 +472,27 @@ html.js .rv.in{opacity:1;transform:none;filter:none;will-change:auto}
   .bento .w12{grid-column:span 12}
 }
 @media (max-width:900px){
-  .hero-grid{grid-template-columns:1fr;gap:56px}
-  .mock{transform:none;max-width:560px}
+  /* minmax(0,1fr), not 1fr: a 1fr track never shrinks below its widest child's min-content, and at
+   * 320px the eyebrow chip held the column 26px wider than the screen (review, Codex). */
+  .hero-grid{grid-template-columns:minmax(0,1fr);gap:56px}
+  .hero-grid>*{min-width:0}
+  .demo{width:100%;max-width:600px}
   .steps{grid-template-columns:1fr}
   .honesty{grid-template-columns:1fr}
   .plats{grid-template-columns:1fr}
   .rail-in ul{margin-left:0}
 }
 @media (max-width:760px){
-  .nav-links,.nav .btn{display:none}
-  .burger{display:block}
+  /* The menu button only exists with the script that runs it. Without it (blocked, failed), the
+   * ordinary links stay, wrapped in a nav bar that scrolls away with the page (review, Codex: the
+   * button showed and did nothing). */
+  html.js .nav-links,html.js .nav .btn{display:none}
+  html.js .burger{display:block}
   .nav-pill{width:100%;justify-content:space-between;padding-left:18px}
+  html:not(.js) .nav{position:relative}
+  html:not(.js) .nav-pill{flex-wrap:wrap;justify-content:center;border-radius:24px;padding:10px}
+  html:not(.js) .nav-links{flex-wrap:wrap;justify-content:center}
+  html:not(.js) .hero,html:not(.js) .doc{padding-top:40px}
   .hero{min-height:auto;padding-block:128px 72px}
   .bento .shell,.bento .w5,.bento .w6,.bento .w7,.bento .w8{grid-column:span 12}
   .nots{grid-template-columns:1fr}
@@ -432,6 +507,23 @@ html.js .rv.in{opacity:1;transform:none;filter:none;will-change:auto}
     letter-spacing:.13em;text-transform:uppercase;color:var(--fg-3)}
   .tbl td:first-child{font-size:16.5px}
   .tbl td:first-child::before{display:none}
+
+  /* Phones: the same three objects, flat and overlapping, trimmed to the one thread being
+   * followed. No perspective and no tilt, so nothing is skewed and nothing leaves the screen. */
+  .demo{perspective:none}
+  .stage{height:auto;transform:none;transition:none}
+  .layer{position:relative;inset:auto;transform:none}
+  .stage .d-extra{display:none}
+  .l-post{width:90%;padding:14px 14px 44px}
+  .l-post>.tag{position:absolute;top:18px;right:14px;margin:0}
+  .l-panel{width:74%;margin:-38px 0 0 auto}
+  .pn-title{display:none}
+  .pn-big{margin-top:0}
+  .l-panel .pn-b{padding-bottom:34px}
+  .l-csv{width:96%;margin:-24px 0 0 2%}
+  .l-csv th:nth-child(1){width:34%} .l-csv th:nth-child(2){width:48%} .l-csv th:nth-child(3){width:18%}
+  .l-csv th,.l-csv td{padding:6px 7px}
+  .pn-big b{font-size:34px}
 }
 
 /* ---------- reduced motion -------------------------------------------- */
@@ -440,7 +532,7 @@ html.js .rv.in{opacity:1;transform:none;filter:none;will-change:auto}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
     transition-duration:.001ms !important}
   html.js .rv{opacity:1;transform:none;filter:none}
-  .mock-log li{opacity:1;transform:none}
+  .stage{transition:none}
 }
 
 /* ---------- small pieces the sections need ---------------------------- */
@@ -454,7 +546,95 @@ code{font:400 13px/1.5 var(--mono);background:rgba(255,255,255,.05);
 .copy:hover{color:var(--fg);background:rgba(255,255,255,.06)}
 .plats .wide{grid-column:1/-1}
 
-/* The hero eyebrow is one line or it is nothing: wrapped, it reads as a broken chip. */
+/* The hero eyebrow stays one line down to 361px: wrapped, a pill reads as a broken chip. */
 @media (max-width:430px){
   .eyebrow{font-size:9.5px;letter-spacing:.13em;padding:8px 13px}
 }
+/* Below that it may wrap, as a rounded box rather than a pill, instead of pushing the page sideways. */
+@media (max-width:360px){
+  .eyebrow{max-width:100%;border-radius:14px;line-height:1.5;letter-spacing:.1em}
+  /* No room beside the author's name: the post's tag goes back above the header. */
+  .l-post>.tag{position:static;margin-bottom:10px}
+}
+
+/* ---------- the YouTube key guide, and the links to it ---------------- */
+/* The link sits directly under the YouTube card's "You get", where a visitor first learns a key
+ * is needed, and in the FAQ answer about keys. Both read "Set up your YouTube API key". */
+.guide-link{color:var(--iris);font-weight:500;border-bottom:1px solid rgba(124,140,255,.4);
+  transition:color .4s var(--ease),border-color .4s var(--ease)}
+.guide-link:hover{color:#aab4ff;border-color:currentColor}
+.plat .guide-link{display:flex;width:fit-content;gap:6px;margin-top:12px}
+
+.need{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+.need li{font:500 12px/1.3 var(--mono);letter-spacing:.03em;color:var(--fg-2);padding:9px 14px;
+  border-radius:999px;border:1px solid var(--hair-soft);background:rgba(255,255,255,.025)}
+.gsteps{display:grid;gap:16px;margin:56px 0 0;padding:0;list-style:none;max-width:900px}
+.gstep{display:grid;grid-template-columns:44px 1fr;gap:0 22px;padding:28px 30px 30px}
+.gstep .num{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+  font:500 14px/1 var(--mono);color:var(--fg);border:1px solid rgba(124,140,255,.4);background:var(--iris-dim)}
+.doc .gstep h2{margin:7px 0 12px;font-size:clamp(21px,2.5vw,26px);line-height:1.2;letter-spacing:-.025em}
+.doc .gstep p{font-size:16px;max-width:66ch}
+.doc .gstep p:last-child{margin-bottom:0}
+.ui{font:500 .9em/1.3 var(--sans);color:var(--fg);background:rgba(255,255,255,.06);border:1px solid var(--hair);
+  border-radius:6px;padding:1px 7px;white-space:nowrap}
+.ext{display:inline-flex;align-items:center;gap:9px;padding:10px 16px;border-radius:999px;
+  border:1px solid rgba(124,140,255,.4);background:var(--iris-dim);color:var(--fg);font-weight:500;font-size:15px;
+  transition:background .4s var(--ease),border-color .4s var(--ease)}
+.ext:hover{background:rgba(124,140,255,.24);border-color:rgba(124,140,255,.7)}
+.ext svg{width:13px;height:13px}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.doc .note{margin:18px 0 0;padding:14px 18px;border-radius:14px;border:1px solid var(--hair-soft);
+  background:rgba(255,255,255,.025);font-size:15px;max-width:66ch}
+.doc .note.warn{border-color:rgba(255,196,107,.3);background:rgba(255,196,107,.06)}
+.doc .note b{color:var(--fg);font-weight:500}
+
+/* The panel, drawn in its own tokens (dark theme, YouTube's red), to show where things are.
+ * A drawing, not a control: nothing in it can be focused or clicked, and the key is never shown. */
+.kps{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0 4px;max-width:720px}
+.kps figure{margin:0}
+.kps figcaption{margin-top:10px;font-size:13.5px;color:var(--fg-3)}
+.kp{border-radius:14px;overflow:hidden;color:#ececef;background:#18191c;border:1px solid rgba(255,255,255,.16);
+  font:400 14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;letter-spacing:0;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 50px -24px rgba(0,0,0,.9)}
+.kp::before{content:"";display:block;height:3px;background:linear-gradient(90deg,#ff0033,#be123c)}
+.kp .pn-h .yt{width:18px;height:13px;flex:none}
+.kp-b{padding:14px}
+.kp .ready{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:10px;background:#202226;
+  border:1px solid rgba(255,255,255,.06);font-size:13px;line-height:1.4}
+.kp .ready i{flex:none;width:8px;height:8px;margin-top:5px;border-radius:50%;background:#fbbf24}
+.kp .ready.ok i{background:#4ade80}
+.kp .card{margin-top:12px;padding:12px;border-radius:10px;background:#202226;border:1px solid rgba(255,255,255,.06)}
+.kp .lbl{font-weight:600;font-size:12px;color:#b3b8c0;margin-bottom:8px}
+.kp .inp{padding:8px 12px;border-radius:8px;border:1px solid #ff5c7a;box-shadow:0 0 0 3px rgba(255,92,122,.16);
+  background:#18191c;color:#b3b8c0;font-size:13px;letter-spacing:.18em;overflow:hidden;white-space:nowrap}
+.kp .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.kp .ghost{display:inline-grid;place-items:center;height:32px;padding:0 12px;border-radius:8px;
+  border:1px solid rgba(255,255,255,.1);background:#18191c;font-weight:500;font-size:13px}
+.kp .k{font-size:13px;color:#b3b8c0}
+.kp .seg{display:inline-flex;gap:2px;padding:3px;border-radius:10px;background:#202226;border:1px solid rgba(255,255,255,.1)}
+.kp .seg span{height:28px;padding:0 13px;display:grid;place-items:center;border-radius:7px;font-weight:500;font-size:13px;color:#b3b8c0}
+.kp .seg .on{background:#dc2626;color:#fff;font-weight:600}
+.kp .go{margin-top:14px;height:42px;border-radius:11px;display:grid;place-items:center;color:#fff;font-weight:600;font-size:15px;
+  background:linear-gradient(90deg,#dc2626,#9f1239);box-shadow:0 3px 0 #7f1d1d,inset 0 1px 0 rgba(255,255,255,.18)}
+.kp .go.off{opacity:.42;box-shadow:none}
+.kp .lnk{color:#ff5c7a;font-weight:500;font-size:13px}
+.kp .ring{border-radius:6px;box-shadow:0 0 0 2px #fbbf24;padding:0 4px}
+.kp .msg{margin-top:12px;padding:9px 12px;border-radius:10px;font-size:13px;color:#4ade80;background:rgba(74,222,128,.12)}
+
+.fixes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;max-width:980px}
+.fix{padding:26px 28px 28px}
+.fix h3{margin-bottom:14px}
+.doc .fix p{font-size:15.5px}
+.doc .fix .says{font:400 13px/1.6 var(--mono);color:var(--fg);padding:11px 14px;border-radius:12px;
+  background:rgba(0,0,0,.35);border:1px solid var(--hair-soft);margin:0 0 14px}
+.fix .do{display:block;margin-bottom:6px;font:500 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mint)}
+
+@media (max-width:760px){
+  .gstep{grid-template-columns:1fr;padding:24px 22px 26px}
+  .gstep .num{margin-bottom:6px}
+  .kps,.fixes{grid-template-columns:1fr}
+  .fix{padding:24px 22px 26px}
+}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.cta .key-note{color:var(--fg-2);font-size:14.5px}
+.cta .key-note + .fine{margin-top:14px}

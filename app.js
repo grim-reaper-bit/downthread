@@ -32,30 +32,55 @@
   /* ---- mobile sheet -------------------------------------------------- */
   var burger = $('.burger');
   var sheet = $('.sheet');
-  if (burger && sheet) {
-    var lastFocus = null;
-    var setOpen = function (on) {
+  /* Open, the menu behaves as a dialog: everything but the nav bar and the menu is inert, and Tab
+   * wraps between the two, so focus can never land on a link under the overlay (review, Codex:
+   * Tab after the last link reached the page beneath while the menu stayed open). Closed with
+   * Escape or the Menu button, focus returns to the Menu button; a menu link closes it and lets the
+   * browser move focus to where the link goes. Without the script the button is never shown: the
+   * stylesheet shows the ordinary links instead (html:not(.js)). */
+  if (burger && sheet && nav) {
+    var behind = $$('body > *').filter(function (el) {
+      return el !== nav && el !== sheet && el.tagName !== 'SCRIPT';
+    });
+    var isOpen = function () { return sheet.classList.contains('on'); };
+    var stops = function () {
+      return $$('a[href], button', nav).concat($$('a[href]', sheet)).filter(function (el) {
+        return el.getClientRects().length > 0;
+      });
+    };
+    var setOpen = function (on, restore) {
       nav.classList.toggle('open', on);
       sheet.classList.toggle('on', on);
       burger.setAttribute('aria-expanded', on ? 'true' : 'false');
+      burger.setAttribute('aria-label', on ? 'Close menu' : 'Menu');
       document.body.style.overflow = on ? 'hidden' : '';
-      // Belt and braces with the stylesheet: inert removes the whole subtree from the tab order
-      // and the accessibility tree where the browser supports it.
-      try { sheet.inert = !on; } catch (e) { /* older browsers rely on visibility:hidden */ }
+      // Belt and braces with the stylesheet: inert removes a subtree from the tab order and the
+      // accessibility tree where the browser supports it.
+      try {
+        sheet.inert = !on;
+        behind.forEach(function (el) { el.inert = on; });
+      } catch (e) { /* older browsers: visibility:hidden and the Tab wrap below */ }
       if (on) {
-        lastFocus = document.activeElement;
         var first = sheet.querySelector('a');
         if (first) first.focus();
-      } else if (lastFocus && lastFocus.focus) {
-        // Send focus back where it came from, rather than to the top of the document.
-        lastFocus.focus();
-        lastFocus = null;
+      } else if (restore) {
+        burger.focus();
       }
     };
-    setOpen(false);
-    burger.addEventListener('click', function () { setOpen(!sheet.classList.contains('on')); });
-    $$('a', sheet).forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+    setOpen(false, false);
+    burger.addEventListener('click', function () { setOpen(!isOpen(), true); });
+    $$('a', sheet).forEach(function (a) { a.addEventListener('click', function () { setOpen(false, false); }); });
+    document.addEventListener('keydown', function (e) {
+      if (!isOpen()) return;
+      if (e.key === 'Escape') { setOpen(false, true); return; }
+      if (e.key !== 'Tab') return;
+      var s = stops();
+      if (!s.length) return;
+      var at = s.indexOf(document.activeElement);
+      if (at < 0) { e.preventDefault(); s[0].focus(); }
+      else if (e.shiftKey && at === 0) { e.preventDefault(); s[s.length - 1].focus(); }
+      else if (!e.shiftKey && at === s.length - 1) { e.preventDefault(); s[0].focus(); }
+    });
   }
 
   /* ---- reveal on entry, staggered within a group --------------------- */
@@ -64,7 +89,7 @@
       if (!e.isIntersecting) return;
       e.target.classList.add('in');
       seen.unobserve(e.target);
-      if (e.target.dataset.run) run(e.target);
+      if (e.target.hasAttribute('data-demo')) countUp(e.target);
     });
   }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
 
@@ -78,32 +103,55 @@
     seen.observe(el);
   });
 
-  /* ---- the panel mock plays itself once, when it is looked at -------- */
-  function run(el) {
-    if (calm) {
-      $$('.mock-log li', el).forEach(function (li) { li.classList.add('on'); });
-      var b0 = $('.bar', el); if (b0) b0.classList.add('go');
-      $$('[data-to]', el).forEach(function (n) { n.textContent = n.dataset.to; });
-      return;
-    }
-    var bar = $('.bar', el);
-    if (bar) setTimeout(function () { bar.classList.add('go'); }, 260);
-
-    $$('[data-to]', el).forEach(function (n) {
-      var to = parseInt(n.dataset.to.replace(/[^0-9]/g, ''), 10) || 0;
+  /* ---- the hero demo ------------------------------------------------- */
+  /* The final number is in the markup, so a blocked script or reduced motion shows 112 and never 0.
+   * With motion allowed, it counts up once when the demo is first seen. */
+  function countUp(el) {
+    if (calm) return;
+    $$('[data-count]', el).forEach(function (n) {
+      var to = parseInt(n.dataset.count, 10) || 0;
       var t0 = 0;
       var step = function (t) {
         if (!t0) t0 = t;
-        var p = Math.min(1, (t - t0) / 2200);
-        var eased = 1 - Math.pow(1 - p, 4);
-        n.textContent = Math.round(to * eased).toLocaleString('en-US');
+        var p = Math.min(1, (t - t0) / 1600);
+        n.textContent = Math.round(to * (1 - Math.pow(1 - p, 4))).toLocaleString('en-US');
         if (p < 1) requestAnimationFrame(step);
       };
       requestAnimationFrame(step);
     });
+  }
 
-    $$('.mock-log li', el).forEach(function (li, i) {
-      setTimeout(function () { li.classList.add('on'); }, 500 + i * 420);
+  var demo = $('[data-demo]');
+  var stage = demo && $('.stage', demo);
+  if (stage) {
+    // A small tilt toward the pointer, on desktop with a mouse only. The headline and the install
+    // button are outside .stage and never move; phones get the flat stack from the stylesheet.
+    var wide = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 761px)');
+    var hero = demo.closest('.hero') || demo;
+    var nx = 0, ny = 0, frame = 0;
+    var paint = function () {
+      frame = 0;
+      stage.style.setProperty('--tx', nx.toFixed(3));
+      stage.style.setProperty('--ty', ny.toFixed(3));
+    };
+    var clamp = function (v) { return Math.max(-1, Math.min(1, v)); };
+    if (!calm) {
+      hero.addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse' || !wide.matches) return;
+        var r = demo.getBoundingClientRect();
+        nx = clamp((e.clientX - (r.left + r.width / 2)) / (r.width / 2));
+        ny = clamp((e.clientY - (r.top + r.height / 2)) / (r.height / 2));
+        if (!frame) frame = requestAnimationFrame(paint);
+      });
+      hero.addEventListener('pointerleave', function () {
+        nx = 0; ny = 0;
+        if (!frame) frame = requestAnimationFrame(paint);
+      });
+    }
+    // Pointing at either end of the followed reply — in the post or in the file — lights up both.
+    $$('[data-follow]', demo).forEach(function (el) {
+      el.addEventListener('pointerenter', function () { stage.classList.add('trace'); });
+      el.addEventListener('pointerleave', function () { stage.classList.remove('trace'); });
     });
   }
 

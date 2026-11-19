@@ -98,22 +98,51 @@
             ones arrive; you can delete any of them from the panel.</td>
         </tr>
         <tr>
+          <td>Bulk export batches: the links you pasted, each post's comments (kept until you start a new
+            batch or press "Clear stored data", not only until the files are saved), a list of the posts
+            earlier batches exported in full, and the id of a free trial batch while it is being started</td>
+          <td data-label="Where">Your browser's extension storage</td>
+          <td data-label="Why">So a batch survives closing its page and can be resumed, and so "Skip
+            posts already exported" can work. Starting a new batch clears the last one's comments; "Clear
+            stored data" and "Forget them" on the batch page clear the rest.</td>
+        </tr>
+        <tr>
           <td>Your account: email address and a user id</td>
           <td data-label="Where">Our database (Supabase), and your browser</td>
           <td data-label="Why">Only if you sign in. It is how a pass is attached to a
             person. Without an account nothing of yours is stored anywhere but your own machine.</td>
         </tr>
         <tr>
-          <td>Whether a pass is running, and the date it ends</td>
+          <td>Whether a pass is running, and the date it ends; the same for the bulk export add-on</td>
           <td data-label="Where">Our database (Supabase)</td>
           <td data-label="Why">To answer one question the extension asks a few times a day: is
             this person paid up, and if not, what is their export limit.</td>
         </tr>
         <tr>
-          <td>A sign-in token, and the last answer about your pass</td>
+          <td>Whether you used the free bulk export trial: the id made for that batch (from the time it
+            started and a random part), how many links it had (1 to 3), and when</td>
+          <td data-label="Where">Our database (Supabase)</td>
+          <td data-label="Why">The trial is one batch per account, so it has to be remembered somewhere
+            other than your browser. The links themselves are not sent.</td>
+        </tr>
+        <tr>
+          <td>If you subscribe with a discount code: the code, whether it is held for a checkout you opened
+            or used by a payment, that checkout's id, and when</td>
+          <td data-label="Where">Our database (Supabase)</td>
+          <td data-label="Why">A code can be used by a limited number of accounts, once each, so its uses
+            are counted on our side. A checkout left unpaid for an hour is closed and its hold released.</td>
+        </tr>
+        <tr>
+          <td>Your Downthread sign-in (an access token and a refresh token), the last answer about your
+            pass, a note that a checkout was opened, kept for at most a day, and, only if this browser
+            refuses to remove a sign-in our server has ended, a short fingerprint of it (its account and sign-in session ids and
+            times, never the token) so it is not used again, removed as soon as you sign in again or sign
+            out in that browser (from sync storage, within two weeks at most). That fingerprint is also put in Chrome's sync storage, which Chrome copies to your other
+            signed-in browsers if you use Chrome sync</td>
           <td data-label="Where">Your browser's extension storage</td>
           <td data-label="Why">So you are not asked to sign in repeatedly, and so an export still
-            works when the network does not. Signing out deletes both.</td>
+            works when the network does not; the checkout note makes a purchase show within minutes.
+            Signing out deletes all three.</td>
         </tr>
         <tr>
           <td>The exported CSV or JSON file</td>
@@ -131,20 +160,26 @@
       <li><strong>No comment ever leaves your machine.</strong> Not one line of exported text, not an
         author name, not a profile link, not a count. The account system carries your email and
         whether you have paid — it has no idea which posts you export, or that you exported
-        anything at all.</li>
+        anything at all, apart from one record that you used the free bulk export trial (above),
+        which holds no links and no comments.</li>
       <li><strong>No tracking.</strong> No analytics, telemetry, crash reporting, cookies of its own,
         advertising or advertising identifiers. Your browsing is not recorded; the only addresses
-        kept are those of the posts you chose to export, in your own run history.</li>
+        kept are those of the posts you chose to export, in your own run history and in a bulk export
+        batch you started, both in your own browser.</li>
       <li><strong>No account required to use it.</strong> Signed out, the extension exports up to
         200 comments per post and stores nothing off your machine. An account exists to lift that
-        limit, and for nothing else.</li>
-      <li><strong>It never asks for a password, and never stores a credential.</strong> To ask a
+        limit and to hold the bulk export add-on or its free trial, and for nothing else.</li>
+      <li><strong>It never asks for a password, and never stores a credential for the sites you export
+        from.</strong> To ask a
         platform for the next page of comments, the exporter re-sends that page's own request, which
         means the session fields the page put in it — Facebook's <code>fb_dtsg</code>, X's request
         headers, and their equivalents elsewhere — are held in the tab's memory while the export
         runs, and discarded with the tab. They are never written to disk, never put in an export,
         and never sent anywhere but back to the platform that issued them. Your password and your
-        login cookie are never read at all.</li>
+        login cookie are never read at all. The one credential it does keep is its own: if you sign in
+        to Downthread, the access and refresh tokens of that sign-in (issued by Supabase, through Google)
+        are stored in your browser's extension storage so you stay signed in, as the table above says.
+        Signing out deletes them.</li>
       <li><strong>No selling or sharing.</strong> Your email is used to identify your pass
         and for nothing else. It is not sold, not shared, not mailed to, and not used for any
         purpose unrelated to running your account.</li>
@@ -158,7 +193,7 @@
     </ul>
 
     <h2>Network requests it makes</h2>
-    <p>Three kinds, and no others. All of them come from your own browser.</p>
+    <p>Four kinds, and no others. All of them come from your own browser.</p>
     <ul class="bul">
       <li>Requests to the platform you are exporting from — Facebook, TikTok, Instagram or X — of the
         same kind the page makes for itself when you scroll its comments.</li>
@@ -169,7 +204,13 @@
         sign-in token and nothing else — no comment text, no post address, no page you visited.
         When you look at the price or press Subscribe, the request also carries your browser's time
         zone setting (for example <code>Asia/Manila</code>), used only to decide whether a regional
-        rate applies. It is not stored.</li>
+        rate applies. It is not stored. A discount code you apply is sent with it, to be checked, and
+        recorded only when you press Subscribe with it (above). Starting the free bulk export trial sends one more request,
+        recording that you used it: the batch's id and how many links it has, never the links.</li>
+      <li><strong>Without a pass:</strong> when the popup opens, one request to <code>supabase.co</code>
+        asks what Premium costs where you are, for the offer shown at the top of the popup. It carries
+        your browser's time zone setting and nothing else — no account, no sign-in token, no page you
+        visited — and it is not stored. An offer you dismiss is remembered in this browser only.</li>
     </ul>
     <div class="callout"><strong>Who else is involved.</strong> Signing in uses Google, so Google
       knows you signed in to this extension — it is told nothing about what you export. Accounts and
@@ -189,8 +230,8 @@
             itself loads in every open tab on the supported sites, as described above, so that a post's
             comments can be captured as the page requests them.</td></tr>
         <tr><td><code>storage</code></td>
-          <td data-label="Reason">To keep the settings, the YouTube key, the resume checkpoint and the
-            run history described above, all locally.</td></tr>
+          <td data-label="Reason">To keep the settings, the YouTube key, the resume checkpoint, the
+            run history and bulk export batches described above, all locally.</td></tr>
         <tr><td><code>unlimitedStorage</code></td>
           <td data-label="Reason">A post with tens of thousands of comments produces a resume
             checkpoint larger than the default quota; without this the run would fail partway.</td></tr>
@@ -198,6 +239,13 @@
             twitter.com</td>
           <td data-label="Reason">These are the sites it exports from. It reads the comment responses
             those pages already receive. It has no access to any other site.</td></tr>
+        <tr><td><code>sidePanel</code></td>
+          <td data-label="Reason">To show the bulk export page in Chrome's side panel, beside the Facebook
+            tab it works in. It opens only when you choose Bulk export.</td></tr>
+        <tr><td><code>downloads</code> (optional)</td>
+          <td data-label="Reason">Asked for the first time you start or save a bulk export batch, and
+            not before. It saves the batch's files to Downloads/fb-bulk without Facebook asking to allow
+            several downloads. Single exports do not use it.</td></tr>
         <tr><td><code>identity</code></td>
           <td data-label="Reason">To open the Google sign-in window when you choose to create an
             account. Unused until you press sign in.</td></tr>
@@ -225,7 +273,7 @@
     <p>If this policy changes, the updated version appears on this page and the date changes with it.</p>
     <p><strong>Contact:</strong> <a href="mailto:downthread.support@gmail.com">downthread.support@gmail.com</a>
       for support, questions about this policy, or to have your account deleted.</p>
-    <p class="dim" style="font-size:14.5px">Last updated 23 September 2026. Extension version 3.53.0.</p>
+    <p class="dim" style="font-size:14.5px">Last updated 18 November 2026. Extension version 3.62.1.</p>
   </section>
 </main>
 
