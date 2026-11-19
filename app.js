@@ -85,6 +85,21 @@
       else if (e.shiftKey && at === 0) { e.preventDefault(); s[s.length - 1].focus(); }
       else if (!e.shiftKey && at === s.length - 1) { e.preventDefault(); s[0].focus(); }
     });
+    // Widened past the phone layout (a rotation, a resized window), the Menu button disappears, so
+    // an open menu would have no way to close and the page would stay locked (review, Codex).
+    // Close it, and if focus was in the menu, hand it to the first link on the bar.
+    var phone = window.matchMedia('(max-width: 760px)');
+    var onLayout = function () {
+      if (phone.matches || !isOpen()) return;
+      var wasInside = sheet.contains(document.activeElement) || document.activeElement === burger;
+      setOpen(false, false);
+      if (wasInside) { var s = stops(); if (s.length) s[0].focus(); }
+    };
+    if (phone.addEventListener) phone.addEventListener('change', onLayout);
+    else if (phone.addListener) phone.addListener(onLayout);
+    // resize as well: a media-query change can arrive late, and onLayout is a no-op unless the menu
+    // is open on a wide screen.
+    window.addEventListener('resize', onLayout);
   }
 
   /* ---- reveal on entry, staggered within a group --------------------- */
