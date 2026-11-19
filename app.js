@@ -69,7 +69,11 @@
     };
     setOpen(false, false);
     burger.addEventListener('click', function () { setOpen(!isOpen(), true); });
-    $$('a', sheet).forEach(function (a) { a.addEventListener('click', function () { setOpen(false, false); }); });
+    // Every link, in the menu or on the bar above it (the logo, to #top), closes the menu: the logo
+    // left it open with scrolling locked (review, Codex).
+    $$('a', sheet).concat($$('a', nav)).forEach(function (a) {
+      a.addEventListener('click', function () { if (isOpen()) setOpen(false, false); });
+    });
     document.addEventListener('keydown', function (e) {
       if (!isOpen()) return;
       if (e.key === 'Escape') { setOpen(false, true); return; }
